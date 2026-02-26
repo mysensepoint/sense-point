@@ -86,8 +86,8 @@
     }
   }
 
-  function animateWater(ts) {
-    var now = ts * 0.001;
+  function animateWater() {
+    var now = performance.now() * 0.001;
     ctx.clearRect(0, 0, cvW, cvH);
 
     while (trailPts.length && (now - trailPts[0].t) > TRAIL_LIFE) trailPts.shift();
@@ -96,8 +96,10 @@
     for (var i = drops.length - 1; i >= 0; i--) {
       var d = drops[i];
       var age = now - d.t;
+      if (age < 0) continue;
       var r = age * d.spd;
       if (r > d.max) { drops.splice(i, 1); continue; }
+      if (r < 0.5) continue;
       var p = r / d.max;
       var alpha = 0.35 * (1 - p) * (1 - p);
       ctx.beginPath();
