@@ -178,11 +178,7 @@
     var nowS = now * 0.001;
     trailPts.push({ x: x, y: y, t: nowS });
     if (prevPX >= 0 && (now - lastDisturbTime) > DISTURB_INTERVAL) {
-      var dx = x - prevPX, dy = y - prevPY;
-      var speed = Math.sqrt(dx * dx + dy * dy);
-      var force = Math.min(speed * 0.06, 6);
-      var rad = Math.min(2 + speed * 0.015, 4) | 0;
-      disturbLine(prevPX, prevPY, x, y, force, rad);
+      disturb(x, y, 5, 3);
       lastDisturbTime = now;
       prevPX = x; prevPY = y;
     } else if (prevPX < 0) {
