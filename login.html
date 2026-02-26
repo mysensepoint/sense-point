@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 - SensePoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header__logo">
+      <span class="header__logo-icon">SP</span>
+      <span>SensePoint</span>
+    </a>
+    <button class="header__menu-btn" id="menuToggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Menu Overlay -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+  <nav class="menu-panel" id="menuPanel">
+    <div class="menu-panel__header">
+      <a href="index.html" class="menu-panel__logo">SensePoint</a>
+      <button class="menu-panel__auth" id="authBtn">로그인</button>
+    </div>
+    <ul class="menu-panel__nav">
+      <li><a href="#" class="menu-panel__nav-item">My Note</a></li>
+      <li><a href="sense-makers.html" class="menu-panel__nav-item">Sense Makers</a></li>
+      <li><a href="square.html" class="menu-panel__nav-item">Square</a></li>
+    </ul>
+    <div class="menu-panel__footer">
+      <p class="menu-panel__footer-text">&copy; 2026 SensePoint. All rights reserved.</p>
+      <p class="menu-panel__footer-text">contact@sensepoint.kr</p>
+      <p class="menu-panel__footer-text">02-1234-5678</p>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="auth">
+      <a href="index.html" class="auth__logo">
+        <span class="auth__logo-icon">SP</span>
+        <span class="auth__logo-text">SensePoint</span>
+      </a>
+
+      <div class="auth__card">
+        <h1 class="auth__title">로그인</h1>
+        <p class="auth__subtitle">다시 오셨군요, 반갑습니다.</p>
+
+        <div class="auth__error" id="authError"></div>
+        <div class="auth__success" id="authSuccess"></div>
+
+        <form class="auth__form" id="loginForm" novalidate>
+          <div class="auth__field">
+            <label class="auth__label" for="loginEmail">이메일</label>
+            <input class="auth__input" type="email" id="loginEmail" placeholder="example@email.com" required>
+          </div>
+
+          <div class="auth__field">
+            <label class="auth__label" for="loginPassword">비밀번호</label>
+            <input class="auth__input" type="password" id="loginPassword" placeholder="비밀번호 입력" required>
+          </div>
+
+          <button type="submit" class="auth__submit">로그인</button>
+        </form>
+
+        <button class="auth__resend-btn" id="resendVerification" style="display: none; width: 100%; margin-top: var(--space-md);">인증 메일 재발송</button>
+
+        <div class="auth__footer">
+          아직 계정이 없나요? <a href="signup.html">회원가입</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

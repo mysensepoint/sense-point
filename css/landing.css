@@ -1,0 +1,180 @@
+/* =========================================
+   LANDING PAGE
+   ========================================= */
+
+.landing {
+  position: relative;
+  width: 100%;
+  height: var(--content-height);
+  overflow: hidden;
+}
+
+/* Ripple Canvas - 물결 효과 배경 */
+.landing__ripple-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-ripple);
+  pointer-events: none;
+}
+
+/* Banner Carousel */
+.landing__banner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.landing__banner.is-dragging {
+  cursor: grabbing;
+}
+
+.landing__banner-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.landing__banner-track.is-dragging {
+  transition: none;
+}
+
+.landing__banner-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.landing__banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+}
+
+.landing__banner-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+  padding: var(--space-2xl);
+  max-width: 800px;
+}
+
+.landing__banner-tag {
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+
+.landing__banner-title {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+.landing__banner-desc {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+.landing__banner-cta {
+  margin-top: var(--space-md);
+  padding: var(--space-md) var(--space-2xl);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+}
+
+.landing__banner-cta:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Banner Navigation Arrows - 우측 하단 */
+.landing__banner-nav {
+  position: absolute;
+  bottom: var(--space-2xl);
+  right: var(--space-2xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  z-index: 5;
+}
+
+.landing__banner-nav-btn {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.landing__banner-nav-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.landing__banner-nav-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.landing__banner-counter {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 44px;
+  text-align: center;
+}
+
+.landing__banner-counter .current {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* Slide gradient overlays */
+.landing__banner-slide::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(to top, var(--color-bg), transparent);
+  z-index: 1;
+  pointer-events: none;
+}

@@ -1,0 +1,19 @@
+# Obsidian
+docs/.obsidian/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log

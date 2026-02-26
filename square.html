@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Square - SensePoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/square.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header__logo">
+      <span class="header__logo-icon">SP</span>
+      <span>SensePoint</span>
+    </a>
+    <button class="header__menu-btn" id="menuToggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Menu Overlay -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+  <nav class="menu-panel" id="menuPanel">
+    <div class="menu-panel__header">
+      <a href="index.html" class="menu-panel__logo">SensePoint</a>
+      <button class="menu-panel__auth" id="authBtn">로그인</button>
+    </div>
+    <ul class="menu-panel__nav">
+      <li><a href="my-note.html" class="menu-panel__nav-item">My Note</a></li>
+      <li><a href="sense-makers.html" class="menu-panel__nav-item">Sense Makers</a></li>
+      <li><a href="square.html" class="menu-panel__nav-item is-active">Square</a></li>
+    </ul>
+    <div class="menu-panel__footer">
+      <p class="menu-panel__footer-text">© 2026 SensePoint. All rights reserved.</p>
+      <p class="menu-panel__footer-text">contact@sensepoint.kr</p>
+      <p class="menu-panel__footer-text">02-1234-5678</p>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="square">
+
+      <!-- Left 75% - Memo Feed -->
+      <div class="square__feed" id="squareFeed">
+        <div class="square__feed-header">
+          <h1 class="square__feed-title">Square</h1>
+          <p class="square__feed-desc">다양한 감각이 교차하는 광장에서 새로운 관점과 영감을 나눕니다.</p>
+          <div class="square__filter">
+            <button class="square__filter-tab is-active" data-filter="all">모두 보기</button>
+            <button class="square__filter-tab" data-filter="friends">친구 메모 보기</button>
+          </div>
+        </div>
+
+        <div class="square__feed-list" id="feedList">
+          <!-- JS에서 동적 렌더링 -->
+        </div>
+        <p class="square__feed-empty" id="feedEmpty">아직 공유된 메모가 없습니다.</p>
+      </div>
+
+      <!-- Right 25% - Author Memo Sidebar -->
+      <aside class="square__sidebar" id="squareSidebar">
+        <div class="square__sidebar-default" id="sidebarDefault">
+          <div class="square__sidebar-header">
+            <h2 class="square__sidebar-title">작성자 메모</h2>
+            <p class="square__sidebar-desc">좌측 메모를 클릭하면 해당 작성자의 공개 메모를 모아볼 수 있습니다.</p>
+          </div>
+        </div>
+
+        <div class="square__sidebar-author" id="sidebarAuthor" style="display:none">
+          <div class="square__sidebar-author-header">
+            <button class="square__sidebar-back" id="sidebarBackBtn" title="돌아가기">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <span class="square__sidebar-author-avatar" id="sidebarAuthorAvatar"></span>
+            <span class="square__sidebar-author-name" id="sidebarAuthorName"></span>
+            <span class="square__sidebar-author-count" id="sidebarAuthorCount"></span>
+          </div>
+          <div class="square__sidebar-friend-bar" id="sidebarFriendBar">
+            <!-- JS에서 동적 렌더링 -->
+          </div>
+          <div class="square__sidebar-author-list" id="sidebarAuthorList">
+            <!-- JS에서 동적 렌더링 -->
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/square.js"></script>
+</body>
+</html>

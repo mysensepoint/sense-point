@@ -1,0 +1,226 @@
+/* =========================================
+   RESPONSIVE - Tablet (768px ~ 1024px)
+   ========================================= */
+
+@media (max-width: 1024px) {
+  :root {
+    --menu-width: 35%;
+    --sidebar-width: 30%;
+    --main-width: 70%;
+  }
+
+  .header {
+    padding: 0 var(--space-xl);
+  }
+
+  .landing__banner-title {
+    font-size: var(--text-4xl);
+  }
+
+  .landing__banner-desc {
+    font-size: var(--text-base);
+  }
+
+  .landing__banner-nav {
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+  }
+
+  .sense-makers__content {
+    padding: var(--space-xl) var(--space-xl);
+  }
+
+  .sense-makers__article-title {
+    font-size: var(--text-3xl);
+  }
+
+  .menu-panel__nav-item {
+    font-size: var(--text-xl);
+  }
+
+  /* Square */
+  .square__feed {
+    padding: var(--space-xl) var(--space-xl);
+  }
+
+  .square__feed-title {
+    font-size: var(--text-3xl);
+  }
+
+  /* My Note */
+  .my-note__editor {
+    padding: 0;
+  }
+
+  .my-note__blank,
+  .my-note__template {
+    padding: var(--space-xl) var(--space-xl);
+  }
+
+  .my-note__title-input {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* =========================================
+   RESPONSIVE - Mobile (< 768px)
+   ========================================= */
+
+@media (max-width: 767px) {
+  :root {
+    --header-height: 60px;
+    --content-height: calc(100vh - 60px);
+    --menu-width: 80%;
+  }
+
+  .header {
+    padding: 0 var(--space-md);
+  }
+
+  .header__logo {
+    font-size: var(--text-base);
+  }
+
+  .header__logo-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Landing */
+  .landing__banner-content {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .landing__banner-title {
+    font-size: var(--text-3xl);
+  }
+
+  .landing__banner-desc {
+    font-size: var(--text-sm);
+  }
+
+  .landing__banner-nav {
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+  }
+
+  .landing__banner-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Menu */
+  .menu-panel__header {
+    padding: 0 var(--space-md);
+  }
+
+  .menu-panel__nav {
+    padding: var(--space-xl) var(--space-md);
+    gap: var(--space-md);
+  }
+
+  .menu-panel__nav-item {
+    font-size: var(--text-lg);
+  }
+
+  .menu-panel__footer {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  /* Sense Makers - 모바일에선 세로 스택 */
+  .sense-makers {
+    flex-direction: column;
+  }
+
+  .sense-makers__content {
+    width: 100%;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .sense-makers__sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    min-height: 300px;
+  }
+
+  .sense-makers__article-title {
+    font-size: var(--text-2xl);
+  }
+
+  .sense-makers__article-meta {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  /* Square - 모바일에선 세로 스택 */
+  .square {
+    flex-direction: column;
+  }
+
+  .square__feed {
+    width: 100%;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .square__feed-title {
+    font-size: var(--text-2xl);
+  }
+
+  .square__sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    min-height: 300px;
+  }
+
+  /* My Note - 모바일에선 세로 스택 */
+  .my-note {
+    flex-direction: column;
+  }
+
+  .my-note__editor {
+    width: 100%;
+    height: auto;
+    min-height: 60vh;
+  }
+
+  .my-note__toolbar {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .my-note__new-btn span,
+  .my-note__save-btn span {
+    display: none;
+  }
+
+  .my-note__new-btn,
+  .my-note__save-btn {
+    padding: 8px;
+  }
+
+  .my-note__blank,
+  .my-note__template {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .my-note__title-input {
+    font-size: var(--text-xl);
+  }
+
+  .my-note__sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    min-height: 300px;
+  }
+}

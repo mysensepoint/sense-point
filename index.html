@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SensePoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header - 상단 10% 고정 -->
+  <header class="header">
+    <a href="index.html" class="header__logo">
+      <span class="header__logo-icon">SP</span>
+      <span>SensePoint</span>
+    </a>
+    <button class="header__menu-btn" id="menuToggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Menu Overlay -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+  <nav class="menu-panel" id="menuPanel">
+    <div class="menu-panel__header">
+      <a href="index.html" class="menu-panel__logo">SensePoint</a>
+      <button class="menu-panel__auth" id="authBtn">로그인</button>
+    </div>
+    <ul class="menu-panel__nav">
+      <li><a href="my-note.html" class="menu-panel__nav-item">My Note</a></li>
+      <li><a href="sense-makers.html" class="menu-panel__nav-item">Sense Makers</a></li>
+      <li><a href="square.html" class="menu-panel__nav-item">Square</a></li>
+    </ul>
+    <div class="menu-panel__footer">
+      <p class="menu-panel__footer-text">© 2026 SensePoint. All rights reserved.</p>
+      <p class="menu-panel__footer-text">contact@sensepoint.kr</p>
+      <p class="menu-panel__footer-text">02-1234-5678</p>
+    </div>
+  </nav>
+
+  <!-- Main Content - 90% -->
+  <main class="main-content">
+    <section class="landing">
+      <!-- Water Ripple Effect Canvas -->
+      <canvas class="landing__ripple-canvas" id="rippleCanvas"></canvas>
+
+      <!-- Banner Carousel -->
+      <div class="landing__banner" id="bannerCarousel">
+        <div class="landing__banner-track" id="bannerTrack">
+
+          <!-- Slide 1 -->
+          <div class="landing__banner-slide" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);">
+            <div class="landing__banner-content">
+              <span class="landing__banner-tag">Discover Your Senses</span>
+              <h1 class="landing__banner-title">감각을 깨우는<br>새로운 경험</h1>
+              <p class="landing__banner-desc">SensePoint는 일상 속 감각의 교차점을 탐험하며, 당신만의 인사이트를 발견하는 공간입니다.</p>
+              <a href="sense-makers.html" class="landing__banner-cta">Explore Now</a>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="landing__banner-slide" style="background: linear-gradient(135deg, #0a0a0a 0%, #1b2838 50%, #0d1b2a 100%);">
+            <div class="landing__banner-content">
+              <span class="landing__banner-tag">Sense Makers</span>
+              <h1 class="landing__banner-title">생각의 결을<br>따라가다</h1>
+              <p class="landing__banner-desc">크리에이터들의 감각적인 콘텐츠를 만나고, 메모를 남기며 사유의 깊이를 더해보세요.</p>
+              <a href="sense-makers.html" class="landing__banner-cta">Read More</a>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="landing__banner-slide" style="background: linear-gradient(135deg, #0a0a0a 0%, #2d1b3d 50%, #1a0a2e 100%);">
+            <div class="landing__banner-content">
+              <span class="landing__banner-tag">Square</span>
+              <h1 class="landing__banner-title">감각의 광장에서<br>만나다</h1>
+              <p class="landing__banner-desc">다양한 감각이 교차하는 광장에서 새로운 관점과 영감을 나누어 보세요.</p>
+              <a href="#" class="landing__banner-cta">Join Square</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Banner Navigation - 우측 하단 화살표 -->
+        <div class="landing__banner-nav" id="bannerNav">
+          <button class="landing__banner-nav-btn" id="bannerPrev" aria-label="이전 슬라이드">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <span class="landing__banner-counter">
+            <span class="current" id="bannerCurrent">01</span>
+            <span> / </span>
+            <span id="bannerTotal">03</span>
+          </span>
+          <button class="landing__banner-nav-btn" id="bannerNext" aria-label="다음 슬라이드">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/landing.js"></script>
+</body>
+</html>
