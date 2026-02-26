@@ -121,12 +121,8 @@
         var absL = Math.abs(light);
         if (absL < 0.03) { data[pi + 3] = 0; continue; }
         var intensity = Math.min(absL * 3, 1);
-        if (light > 0) {
-          data[pi] = 220; data[pi + 1] = 195; data[pi + 2] = 140;
-        } else {
-          data[pi] = 175; data[pi + 1] = 145; data[pi + 2] = 90;
-        }
-        data[pi + 3] = (intensity * intensity * 0.4 * 255) | 0;
+        data[pi] = 255; data[pi + 1] = 255; data[pi + 2] = 255;
+        data[pi + 3] = (intensity * intensity * 0.1 * 255) | 0;
       }
     }
     offCtx.putImageData(imgData, 0, 0);
@@ -142,7 +138,7 @@
     if (trailPts.length < 2) return;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    var passes = [{ w: 10, a: 0.008 }, { w: 4, a: 0.02 }, { w: 1.5, a: 0.04 }];
+    var passes = [{ w: 8, a: 0.005 }, { w: 3, a: 0.012 }, { w: 1, a: 0.025 }];
     for (var p = 0; p < passes.length; p++) {
       ctx.lineWidth = passes[p].w;
       for (var i = 1; i < trailPts.length; i++) {
@@ -154,7 +150,7 @@
         ctx.beginPath();
         ctx.moveTo(trailPts[i - 1].x, trailPts[i - 1].y);
         ctx.lineTo(trailPts[i].x, trailPts[i].y);
-        ctx.strokeStyle = 'rgba(200,169,110,' + a + ')';
+        ctx.strokeStyle = 'rgba(255,255,255,' + a + ')';
         ctx.stroke();
       }
     }
@@ -174,18 +170,24 @@
   requestAnimationFrame(animateWater);
 
   var prevPX = -1, prevPY = -1;
+  var lastDisturbTime = 0;
+  var DISTURB_INTERVAL = 160;
 
   function onPointerMove(x, y) {
-    var now = performance.now() * 0.001;
-    trailPts.push({ x: x, y: y, t: now });
-    if (prevPX >= 0) {
+    var now = performance.now();
+    var nowS = now * 0.001;
+    trailPts.push({ x: x, y: y, t: nowS });
+    if (prevPX >= 0 && (now - lastDisturbTime) > DISTURB_INTERVAL) {
       var dx = x - prevPX, dy = y - prevPY;
       var speed = Math.sqrt(dx * dx + dy * dy);
-      var force = Math.min(speed * 0.2, 20);
-      var rad = Math.min(2 + speed * 0.03, 6) | 0;
+      var force = Math.min(speed * 0.12, 12);
+      var rad = Math.min(2 + speed * 0.02, 5) | 0;
       disturbLine(prevPX, prevPY, x, y, force, rad);
+      lastDisturbTime = now;
+      prevPX = x; prevPY = y;
+    } else if (prevPX < 0) {
+      prevPX = x; prevPY = y;
     }
-    prevPX = x; prevPY = y;
   }
 
   function resetPointer() { prevPX = -1; prevPY = -1; }
@@ -206,6 +208,6 @@
 
   canvas.parentElement.addEventListener('click', function (e) {
     var rect = canvas.getBoundingClientRect();
-    disturb(e.clientX - rect.left, e.clientY - rect.top, 35, 7);
+    disturb(e.clientX - rect.left, e.clientY - rect.top, 20, 5);
   });
 })();
