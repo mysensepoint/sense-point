@@ -54,7 +54,7 @@
   var cols, rows;
   var buf1, buf2;
   var offCvs, offCtx, imgData;
-  var DAMPING = 0.86;
+  var DAMPING = 0.935;
   var SIM_STEP = 1 / 60;
   var simAccum = 0;
   var lastSimTime = 0;
@@ -122,7 +122,7 @@
         if (absL < 0.03) { data[pi + 3] = 0; continue; }
         var intensity = Math.min(absL * 3, 1);
         data[pi] = 255; data[pi + 1] = 255; data[pi + 2] = 255;
-        data[pi + 3] = (intensity * intensity * 0.1 * 255) | 0;
+        data[pi + 3] = (intensity * intensity * 0.07 * 255) | 0;
       }
     }
     offCtx.putImageData(imgData, 0, 0);
@@ -138,7 +138,7 @@
     if (trailPts.length < 2) return;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    var passes = [{ w: 8, a: 0.005 }, { w: 3, a: 0.012 }, { w: 1, a: 0.025 }];
+    var passes = [{ w: 6, a: 0.004 }, { w: 2.5, a: 0.01 }, { w: 1, a: 0.02 }];
     for (var p = 0; p < passes.length; p++) {
       ctx.lineWidth = passes[p].w;
       for (var i = 1; i < trailPts.length; i++) {
@@ -171,7 +171,7 @@
 
   var prevPX = -1, prevPY = -1;
   var lastDisturbTime = 0;
-  var DISTURB_INTERVAL = 16000;
+  var DISTURB_INTERVAL = 300;
 
   function onPointerMove(x, y) {
     var now = performance.now();
@@ -180,8 +180,8 @@
     if (prevPX >= 0 && (now - lastDisturbTime) > DISTURB_INTERVAL) {
       var dx = x - prevPX, dy = y - prevPY;
       var speed = Math.sqrt(dx * dx + dy * dy);
-      var force = Math.min(speed * 0.12, 12);
-      var rad = Math.min(2 + speed * 0.02, 5) | 0;
+      var force = Math.min(speed * 0.06, 6);
+      var rad = Math.min(2 + speed * 0.015, 4) | 0;
       disturbLine(prevPX, prevPY, x, y, force, rad);
       lastDisturbTime = now;
       prevPX = x; prevPY = y;
@@ -208,6 +208,6 @@
 
   canvas.parentElement.addEventListener('click', function (e) {
     var rect = canvas.getBoundingClientRect();
-    disturb(e.clientX - rect.left, e.clientY - rect.top, 20, 5);
+    disturb(e.clientX - rect.left, e.clientY - rect.top, 10, 4);
   });
 })();
