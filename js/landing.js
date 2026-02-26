@@ -54,7 +54,7 @@
   var cols, rows;
   var buf1, buf2;
   var offCvs, offCtx, imgData;
-  var DAMPING = 0.965;
+  var DAMPING = 0.86;
   var SIM_STEP = 1 / 60;
   var simAccum = 0;
   var lastSimTime = 0;
@@ -171,7 +171,7 @@
 
   var prevPX = -1, prevPY = -1;
   var lastDisturbTime = 0;
-  var DISTURB_INTERVAL = 160;
+  var DISTURB_INTERVAL = 16000;
 
   function onPointerMove(x, y) {
     var now = performance.now();
