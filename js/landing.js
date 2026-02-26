@@ -43,132 +43,106 @@
   });
 
   // =========================================
-  // Water Surface Trail Effect
+  // Water Surface Simulation (Heightmap)
   // =========================================
 
-  const canvas = document.getElementById('rippleCanvas');
-  const ctx = canvas.getContext('2d');
-  let cvW, cvH;
+  var canvas = document.getElementById('rippleCanvas');
+  var ctx = canvas.getContext('2d');
+  var cvW, cvH;
+
+  var CELL = 5;
+  var cols, rows;
+  var buf1, buf2;
+  var offCvs, offCtx, imgData;
+  var DAMPING = 0.965;
+  var SIM_STEP = 1 / 60;
+  var simAccum = 0;
+  var lastSimTime = 0;
 
   function resizeCanvas() {
     cvW = canvas.width = canvas.offsetWidth;
     cvH = canvas.height = canvas.offsetHeight;
+    cols = ((cvW / CELL) | 0) + 2;
+    rows = ((cvH / CELL) | 0) + 2;
+    buf1 = new Float32Array(cols * rows);
+    buf2 = new Float32Array(cols * rows);
+    offCvs = document.createElement('canvas');
+    offCvs.width = cols;
+    offCvs.height = rows;
+    offCtx = offCvs.getContext('2d');
+    imgData = offCtx.createImageData(cols, rows);
   }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  const TRAIL_LIFE = 1.8;
-  const SPAWN_GAP = 40;
-  const MAX_WAVES = 100;
-  const trailPts = [];
-  const waves = [];
-  let prevPX = -1, prevPY = -1, prevPT = 0, lastSpawn = 0;
-
-  class TrailWave {
-    constructor(x, y, angle, speed) {
-      this.x = x;
-      this.y = y;
-      this.cos = Math.cos(angle);
-      this.sin = Math.sin(angle);
-      this.born = performance.now() * 0.001;
-      var sf = Math.min(speed / 500, 1);
-      this.life = 1.2 + sf * 0.8 + Math.random() * 0.4;
-      this.maxSp = 20 + sf * 80;
-      this.ecc = 0.3 + sf * 0.15;
-      this.amp = 1.5 + sf * 5;
-      this.a0 = 0.04 + sf * 0.1;
-      this.nr = 2 + (sf * 2 | 0);
-      this.ph = Math.random() * Math.PI * 2;
-      this.gr = 45 + sf * 85;
-    }
-  }
-
-  class SplashWave {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.born = performance.now() * 0.001;
-      this.life = 2.2 + Math.random() * 0.5;
-      this.maxSp = 100 + Math.random() * 60;
-      this.amp = 4 + Math.random() * 3;
-      this.a0 = 0.15;
-      this.nr = 4;
-      this.ph = Math.random() * Math.PI * 2;
-      this.gr = 90;
-    }
-  }
-
-  function drawTrailWave(w, now) {
-    var age = now - w.born;
-    if (age > w.life) return false;
-    var t = age / w.life;
-    var fade = Math.pow(1 - t, 0.65);
-    var alpha = w.a0 * fade;
-    if (alpha < 0.003) return true;
-    var spread = Math.min(age * w.gr, w.maxSp);
-    var c = w.cos, s = w.sin;
-    for (var r = 0; r < w.nr; r++) {
-      var rs = spread * (r + 1) / w.nr;
-      var ra = alpha * (1 - r * 0.22);
-      if (ra < 0.003 || rs < 1.5) continue;
-      ctx.beginPath();
-      for (var i = 0; i <= 28; i++) {
-        var a = i / 28 * Math.PI * 2;
-        var ex = Math.cos(a) * rs * w.ecc;
-        var ey = Math.sin(a) * rs;
-        var rx = ex * c - ey * s;
-        var ry = ex * s + ey * c;
-        var d = Math.sin(a * 4 + w.ph + age * 3.5) * w.amp * fade;
-        var px = w.x + rx + Math.cos(a) * d;
-        var py = w.y + ry + Math.sin(a) * d;
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  function disturb(px, py, force, rad) {
+    var gx = (px / CELL) | 0;
+    var gy = (py / CELL) | 0;
+    for (var dy = -rad; dy <= rad; dy++) {
+      for (var dx = -rad; dx <= rad; dx++) {
+        var nx = gx + dx, ny = gy + dy;
+        if (nx > 0 && nx < cols - 1 && ny > 0 && ny < rows - 1) {
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d <= rad) buf1[ny * cols + nx] += force * (1 - d / rad);
+        }
       }
-      ctx.closePath();
-      ctx.strokeStyle = 'rgba(200,169,110,' + ra + ')';
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
     }
-    return true;
   }
 
-  function drawSplashWave(w, now) {
-    var age = now - w.born;
-    if (age > w.life) return false;
-    var t = age / w.life;
-    var fade = Math.pow(1 - t, 0.5);
-    var alpha = w.a0 * fade;
-    if (alpha < 0.003) return true;
-    var spread = Math.min(age * w.gr, w.maxSp);
-    for (var r = 0; r < w.nr; r++) {
-      var rad = spread * (r + 1) / w.nr;
-      var ra = alpha * (1 - r * 0.18);
-      if (ra < 0.003 || rad < 2) continue;
-      ctx.beginPath();
-      for (var i = 0; i <= 48; i++) {
-        var a = i / 48 * Math.PI * 2;
-        var d = Math.sin(a * 6 + w.ph + age * 3) * w.amp * fade;
-        var R = rad + d;
-        var px = w.x + Math.cos(a) * R;
-        var py = w.y + Math.sin(a) * R;
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-      ctx.strokeStyle = 'rgba(200,169,110,' + ra + ')';
-      ctx.lineWidth = 1;
-      ctx.stroke();
+  function disturbLine(x0, y0, x1, y1, force, rad) {
+    var dx = x1 - x0, dy = y1 - y0;
+    var len = Math.sqrt(dx * dx + dy * dy);
+    var steps = Math.max(Math.ceil(len / (CELL * 0.5)), 1);
+    for (var i = 0; i <= steps; i++) {
+      var t = i / steps;
+      disturb(x0 + dx * t, y0 + dy * t, force, rad);
     }
-    return true;
   }
+
+  function propagate() {
+    for (var y = 1; y < rows - 1; y++) {
+      for (var x = 1; x < cols - 1; x++) {
+        var i = y * cols + x;
+        buf2[i] = ((buf1[i - 1] + buf1[i + 1] + buf1[i - cols] + buf1[i + cols]) * 0.5 - buf2[i]) * DAMPING;
+      }
+    }
+    var tmp = buf1; buf1 = buf2; buf2 = tmp;
+  }
+
+  function renderWater() {
+    var data = imgData.data;
+    for (var y = 1; y < rows - 1; y++) {
+      for (var x = 1; x < cols - 1; x++) {
+        var idx = y * cols + x;
+        var pi = idx << 2;
+        var dhdx = buf1[idx + 1] - buf1[idx - 1];
+        var dhdy = buf1[idx + cols] - buf1[idx - cols];
+        var light = dhdx * 0.7 + dhdy * 0.7;
+        var absL = Math.abs(light);
+        if (absL < 0.03) { data[pi + 3] = 0; continue; }
+        var intensity = Math.min(absL * 3, 1);
+        if (light > 0) {
+          data[pi] = 220; data[pi + 1] = 195; data[pi + 2] = 140;
+        } else {
+          data[pi] = 175; data[pi + 1] = 145; data[pi + 2] = 90;
+        }
+        data[pi + 3] = (intensity * intensity * 0.4 * 255) | 0;
+      }
+    }
+    offCtx.putImageData(imgData, 0, 0);
+    ctx.clearRect(0, 0, cvW, cvH);
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(offCvs, 0, 0, cvW, cvH);
+  }
+
+  var trailPts = [];
+  var TRAIL_LIFE = 1.0;
 
   function drawGlow(now) {
     if (trailPts.length < 2) return;
-    var passes = [
-      { w: 14, a: 0.008 },
-      { w: 6, a: 0.02 },
-      { w: 2, a: 0.045 }
-    ];
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
+    var passes = [{ w: 10, a: 0.008 }, { w: 4, a: 0.02 }, { w: 1.5, a: 0.04 }];
     for (var p = 0; p < passes.length; p++) {
       ctx.lineWidth = passes[p].w;
       for (var i = 1; i < trailPts.length; i++) {
@@ -188,39 +162,30 @@
 
   function animateWater(ts) {
     var now = ts * 0.001;
-    ctx.clearRect(0, 0, cvW, cvH);
-    while (trailPts.length && (now - trailPts[0].t) > TRAIL_LIFE) {
-      trailPts.shift();
-    }
+    var dt = lastSimTime ? Math.min(now - lastSimTime, 0.05) : SIM_STEP;
+    lastSimTime = now;
+    simAccum += dt;
+    while (simAccum >= SIM_STEP) { propagate(); simAccum -= SIM_STEP; }
+    renderWater();
+    while (trailPts.length && (now - trailPts[0].t) > TRAIL_LIFE) trailPts.shift();
     drawGlow(now);
-    for (var i = waves.length - 1; i >= 0; i--) {
-      var w = waves[i];
-      var alive = w instanceof SplashWave
-        ? drawSplashWave(w, now)
-        : drawTrailWave(w, now);
-      if (!alive) waves.splice(i, 1);
-    }
     requestAnimationFrame(animateWater);
   }
   requestAnimationFrame(animateWater);
 
+  var prevPX = -1, prevPY = -1;
+
   function onPointerMove(x, y) {
-    var now = performance.now();
-    var nowS = now * 0.001;
-    if (prevPX < 0) {
-      prevPX = x; prevPY = y; prevPT = now;
-      return;
+    var now = performance.now() * 0.001;
+    trailPts.push({ x: x, y: y, t: now });
+    if (prevPX >= 0) {
+      var dx = x - prevPX, dy = y - prevPY;
+      var speed = Math.sqrt(dx * dx + dy * dy);
+      var force = Math.min(speed * 0.2, 20);
+      var rad = Math.min(2 + speed * 0.03, 6) | 0;
+      disturbLine(prevPX, prevPY, x, y, force, rad);
     }
-    var dx = x - prevPX, dy = y - prevPY;
-    var dt = Math.max(now - prevPT, 1) * 0.001;
-    var speed = Math.min(Math.sqrt(dx * dx + dy * dy) / dt, 2000);
-    var angle = Math.atan2(dy, dx);
-    trailPts.push({ x: x, y: y, t: nowS });
-    if ((now - lastSpawn) > SPAWN_GAP && speed > 20 && waves.length < MAX_WAVES) {
-      waves.push(new TrailWave(x, y, angle, speed));
-      lastSpawn = now;
-    }
-    prevPX = x; prevPY = y; prevPT = now;
+    prevPX = x; prevPY = y;
   }
 
   function resetPointer() { prevPX = -1; prevPY = -1; }
@@ -232,8 +197,8 @@
 
   canvas.parentElement.addEventListener('touchmove', function (e) {
     var rect = canvas.getBoundingClientRect();
-    var touch = e.touches[0];
-    onPointerMove(touch.clientX - rect.left, touch.clientY - rect.top);
+    var t = e.touches[0];
+    onPointerMove(t.clientX - rect.left, t.clientY - rect.top);
   }, { passive: true });
 
   canvas.parentElement.addEventListener('mouseleave', resetPointer);
@@ -241,6 +206,6 @@
 
   canvas.parentElement.addEventListener('click', function (e) {
     var rect = canvas.getBoundingClientRect();
-    waves.push(new SplashWave(e.clientX - rect.left, e.clientY - rect.top));
+    disturb(e.clientX - rect.left, e.clientY - rect.top, 35, 7);
   });
 })();
