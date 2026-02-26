@@ -1,0 +1,39 @@
+---
+description: SensePoint 프로젝트 핵심 컨텍스트. 모든 작업에 적용.
+alwaysApply: true
+---
+
+# SensePoint 프로젝트 규칙
+
+## 프로젝트 정보
+- **이름**: SensePoint — 감각의 교차점을 탐험하는 웹 플랫폼
+- **기술**: HTML5 + CSS3(Flexbox, Custom Properties) + Vanilla JS + Firebase
+- **배포**: GitHub Pages — https://mysensepoint.github.io/sense-point/
+- **GitHub**: https://github.com/mysensepoint/sense-point
+
+## 사용자 정보
+- 비개발자. 코드를 직접 수정하지 않음.
+- 모든 코드 변경은 Cursor AI를 통해 자연어로 요청.
+- 설명은 쉽고 친절하게, 기술 용어는 최소화.
+
+## 현재 상태
+- 6개 페이지 기능 구현 완료 (index, sense-makers, square, my-note, login, signup)
+- **디자이너(기민)의 피그마 디자인 작업 대기 중**
+- 디자인 수령 후 스크린샷 기반으로 코드에 적용 예정
+
+## 디자인 시스템
+- 다크 테마: 배경 `#0a0a0a`, 텍스트 `#f5f5f5`, 액센트 `#c8a96e`
+- 디자인 토큰: `css/variables.css`에 CSS 변수로 정의
+- 폰트: Pretendard(본문), Playfair Display(영문 디스플레이)
+
+## 기획 문서
+- `docs/` 폴더에 Obsidian 볼트로 관리
+- 페이지 명세: `docs/02-page-specs/`
+- 컴포넌트 명세: `docs/03-common-components/`
+- 디자인 시스템: `docs/04-design-system/`
+- 구현 현황: `docs/05-implementation/구현 현황.md`
+
+## 작업 규칙
+- 코드 변경 후 관련 docs/ 문서도 함께 최신화할 것
+- 구현 현황 체크리스트(`docs/05-implementation/구현 현황.md`) 반영할 것
+- 새 기능/페이지 추가 시 해당 page-spec 문서도 업데이트할 것

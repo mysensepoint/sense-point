@@ -1,0 +1,28 @@
+---
+description: SensePoint 코드 컨벤션
+globs: "**/*.{html,css,js}"
+alwaysApply: false
+---
+
+# 코드 컨벤션
+
+## 레이아웃
+- 모든 레이아웃은 Flexbox 기반 (Figma Auto Layout과 1:1 대응)
+- 고정값(px)보다 비율(%) 우선
+- 헤더 10vh 고정, 메인 컨텐츠 90vh
+
+## CSS
+- 디자인 토큰은 `css/variables.css`의 CSS 변수 사용 (하드코딩 금지)
+- 클래스명: BEM 방식 (`block__element--modifier`)
+- 페이지별 CSS 파일 분리 (landing.css, sense-makers.css 등)
+- 반응형: `css/responsive.css`에 미디어 쿼리 통합
+
+## 반응형 브레이크포인트
+- PC: > 1024px (기본)
+- 태블릿: 768px ~ 1024px
+- 모바일: < 768px
+
+## JavaScript
+- Vanilla JS (프레임워크 없음)
+- 전역 API: `window.SensePoint` (common.js), `window.FB` (firebase-config.js)
+- 페이지별 JS 파일 분리
