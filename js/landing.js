@@ -43,93 +43,23 @@
   });
 
   // =========================================
-  // Water Surface Simulation (Heightmap)
+  // Water Drop Effect
   // =========================================
 
   var canvas = document.getElementById('rippleCanvas');
   var ctx = canvas.getContext('2d');
   var cvW, cvH;
 
-  var CELL = 5;
-  var cols, rows;
-  var buf1, buf2;
-  var offCvs, offCtx, imgData;
-  var DAMPING = 0.935;
-  var SIM_STEP = 1 / 60;
-  var simAccum = 0;
-  var lastSimTime = 0;
-
   function resizeCanvas() {
     cvW = canvas.width = canvas.offsetWidth;
     cvH = canvas.height = canvas.offsetHeight;
-    cols = ((cvW / CELL) | 0) + 2;
-    rows = ((cvH / CELL) | 0) + 2;
-    buf1 = new Float32Array(cols * rows);
-    buf2 = new Float32Array(cols * rows);
-    offCvs = document.createElement('canvas');
-    offCvs.width = cols;
-    offCvs.height = rows;
-    offCtx = offCvs.getContext('2d');
-    imgData = offCtx.createImageData(cols, rows);
   }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  function disturb(px, py, force, rad) {
-    var gx = (px / CELL) | 0;
-    var gy = (py / CELL) | 0;
-    for (var dy = -rad; dy <= rad; dy++) {
-      for (var dx = -rad; dx <= rad; dx++) {
-        var nx = gx + dx, ny = gy + dy;
-        if (nx > 0 && nx < cols - 1 && ny > 0 && ny < rows - 1) {
-          var d = Math.sqrt(dx * dx + dy * dy);
-          if (d <= rad) buf1[ny * cols + nx] += force * (1 - d / rad);
-        }
-      }
-    }
-  }
-
-  function disturbLine(x0, y0, x1, y1, force, rad) {
-    var dx = x1 - x0, dy = y1 - y0;
-    var len = Math.sqrt(dx * dx + dy * dy);
-    var steps = Math.max(Math.ceil(len / (CELL * 0.5)), 1);
-    for (var i = 0; i <= steps; i++) {
-      var t = i / steps;
-      disturb(x0 + dx * t, y0 + dy * t, force, rad);
-    }
-  }
-
-  function propagate() {
-    for (var y = 1; y < rows - 1; y++) {
-      for (var x = 1; x < cols - 1; x++) {
-        var i = y * cols + x;
-        buf2[i] = ((buf1[i - 1] + buf1[i + 1] + buf1[i - cols] + buf1[i + cols]) * 0.5 - buf2[i]) * DAMPING;
-      }
-    }
-    var tmp = buf1; buf1 = buf2; buf2 = tmp;
-  }
-
-  function renderWater() {
-    var data = imgData.data;
-    for (var y = 1; y < rows - 1; y++) {
-      for (var x = 1; x < cols - 1; x++) {
-        var idx = y * cols + x;
-        var pi = idx << 2;
-        var dhdx = buf1[idx + 1] - buf1[idx - 1];
-        var dhdy = buf1[idx + cols] - buf1[idx - cols];
-        var light = dhdx * 0.7 + dhdy * 0.7;
-        var absL = Math.abs(light);
-        if (absL < 0.03) { data[pi + 3] = 0; continue; }
-        var intensity = Math.min(absL * 3, 1);
-        data[pi] = 255; data[pi + 1] = 255; data[pi + 2] = 255;
-        data[pi + 3] = (intensity * intensity * 0.07 * 255) | 0;
-      }
-    }
-    offCtx.putImageData(imgData, 0, 0);
-    ctx.clearRect(0, 0, cvW, cvH);
-    ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(offCvs, 0, 0, cvW, cvH);
-  }
+  var drops = [];
+  var DROP_SPEED = 80;
+  var DROP_MAX = 120;
 
   var trailPts = [];
   var TRAIL_LIFE = 1.0;
@@ -158,30 +88,51 @@
 
   function animateWater(ts) {
     var now = ts * 0.001;
-    var dt = lastSimTime ? Math.min(now - lastSimTime, 0.05) : SIM_STEP;
-    lastSimTime = now;
-    simAccum += dt;
-    while (simAccum >= SIM_STEP) { propagate(); simAccum -= SIM_STEP; }
-    renderWater();
+    ctx.clearRect(0, 0, cvW, cvH);
+
     while (trailPts.length && (now - trailPts[0].t) > TRAIL_LIFE) trailPts.shift();
     drawGlow(now);
+
+    for (var i = drops.length - 1; i >= 0; i--) {
+      var d = drops[i];
+      var age = now - d.t;
+      var r = age * d.spd;
+      if (r > d.max) { drops.splice(i, 1); continue; }
+      var p = r / d.max;
+      var alpha = 0.08 * (1 - p) * (1 - p);
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
+      ctx.lineWidth = 1.5 * (1 - p * 0.6);
+      ctx.stroke();
+    }
+
     requestAnimationFrame(animateWater);
   }
   requestAnimationFrame(animateWater);
 
   var prevPX = -1, prevPY = -1;
-  var lastDisturbTime = 0;
-  var DISTURB_INTERVAL = 300;
+  var lastDropTime = 0;
+  var DROP_INTERVAL = 300;
+
+  function addDrop(x, y, big) {
+    var now = performance.now() * 0.001;
+    drops.push({
+      x: x, y: y, t: now,
+      spd: big ? 100 : DROP_SPEED,
+      max: big ? 160 : DROP_MAX
+    });
+  }
 
   function onPointerMove(x, y) {
     var now = performance.now();
     var nowS = now * 0.001;
     trailPts.push({ x: x, y: y, t: nowS });
-    if (prevPX >= 0 && (now - lastDisturbTime) > DISTURB_INTERVAL) {
+    if (prevPX >= 0 && (now - lastDropTime) > DROP_INTERVAL) {
       var dx = x - prevPX, dy = y - prevPY;
       if (dx * dx + dy * dy > 900) {
-        disturb(x, y, 5, 3);
-        lastDisturbTime = now;
+        addDrop(x, y, false);
+        lastDropTime = now;
         prevPX = x; prevPY = y;
       }
     } else if (prevPX < 0) {
@@ -207,6 +158,6 @@
 
   canvas.parentElement.addEventListener('click', function (e) {
     var rect = canvas.getBoundingClientRect();
-    disturb(e.clientX - rect.left, e.clientY - rect.top, 10, 4);
+    addDrop(e.clientX - rect.left, e.clientY - rect.top, true);
   });
 })();
