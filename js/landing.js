@@ -99,11 +99,11 @@
       var r = age * d.spd;
       if (r > d.max) { drops.splice(i, 1); continue; }
       var p = r / d.max;
-      var alpha = 0.08 * (1 - p) * (1 - p);
+      var alpha = 0.35 * (1 - p) * (1 - p);
       ctx.beginPath();
       ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
       ctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
-      ctx.lineWidth = 1.5 * (1 - p * 0.6);
+      ctx.lineWidth = 2 * (1 - p * 0.5);
       ctx.stroke();
     }
 
