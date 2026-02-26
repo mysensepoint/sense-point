@@ -115,7 +115,7 @@
 
   var prevPX = -1, prevPY = -1;
   var lastDropTime = 0;
-  var DROP_INTERVAL = 300;
+  var DROP_INTERVAL = 900;
 
   function addDrop(x, y, big) {
     var now = performance.now() * 0.001;
