@@ -1,16 +1,15 @@
 /**
  * SensePoint - Landing Page
- * 배너 캐러셀(드래그+화살표+터치스와이프+자동슬라이드) 및 물결 효과
+ * 배너 캐러셀(화살표 버튼) 및 물결 효과
  */
 
 (function () {
   'use strict';
 
   // =========================================
-  // Banner Carousel
+  // Banner Carousel (Arrow Buttons Only)
   // =========================================
 
-  const carousel = document.getElementById('bannerCarousel');
   const track = document.getElementById('bannerTrack');
   const prevBtn = document.getElementById('bannerPrev');
   const nextBtn = document.getElementById('bannerNext');
@@ -20,15 +19,6 @@
   const slides = track.querySelectorAll('.landing__banner-slide');
   const totalSlides = slides.length;
   let currentIndex = 0;
-  let isDragging = false;
-  let isTouchInteraction = false;
-  let startX = 0;
-  let currentTranslate = 0;
-  let prevTranslate = 0;
-
-  const TOUCH_SWIPE_THRESHOLD = 50;
-  const AUTO_SLIDE_INTERVAL = 5000;
-  let autoSlideTimer = null;
 
   totalDisplay.textContent = String(totalSlides).padStart(2, '0');
 
@@ -36,120 +26,21 @@
     if (index < 0) index = totalSlides - 1;
     if (index >= totalSlides) index = 0;
     currentIndex = index;
-    currentTranslate = -currentIndex * 100;
-    prevTranslate = currentTranslate;
-    track.style.transform = `translateX(${currentTranslate}%)`;
+    track.style.transform = `translateX(${-currentIndex * 100}%)`;
     currentDisplay.textContent = String(currentIndex + 1).padStart(2, '0');
-    track.classList.remove('is-dragging');
   }
-
-  // --- Auto-slide ---
-
-  function startAutoSlide() {
-    stopAutoSlide();
-    autoSlideTimer = setInterval(function () {
-      goToSlide(currentIndex + 1);
-    }, AUTO_SLIDE_INTERVAL);
-  }
-
-  function stopAutoSlide() {
-    if (autoSlideTimer) {
-      clearInterval(autoSlideTimer);
-      autoSlideTimer = null;
-    }
-  }
-
-  function resetAutoSlide() {
-    stopAutoSlide();
-    startAutoSlide();
-  }
-
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) {
-      stopAutoSlide();
-    } else {
-      startAutoSlide();
-    }
-  });
 
   prevBtn.addEventListener('click', function () {
     goToSlide(currentIndex - 1);
-    resetAutoSlide();
   });
   nextBtn.addEventListener('click', function () {
     goToSlide(currentIndex + 1);
-    resetAutoSlide();
   });
 
-  // --- Drag & Touch Swipe ---
-
-  function getPositionX(e) {
-    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  }
-
-  function dragStart(e) {
-    if (e.target.closest('.landing__banner-nav')) return;
-    isDragging = true;
-    isTouchInteraction = e.type === 'touchstart';
-    startX = getPositionX(e);
-    track.classList.add('is-dragging');
-    carousel.classList.add('is-dragging');
-  }
-
-  function dragMove(e) {
-    if (!isDragging) return;
-    const currentX = getPositionX(e);
-    const diff = currentX - startX;
-    const carouselWidth = carousel.offsetWidth;
-    const percentMoved = (diff / carouselWidth) * 100;
-    currentTranslate = prevTranslate + percentMoved;
-    track.style.transform = `translateX(${currentTranslate}%)`;
-  }
-
-  function dragEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    carousel.classList.remove('is-dragging');
-
-    const movedPercent = currentTranslate - prevTranslate;
-    const carouselWidth = carousel.offsetWidth;
-    const movedPx = (movedPercent / 100) * carouselWidth;
-    const threshold = isTouchInteraction ? TOUCH_SWIPE_THRESHOLD : carouselWidth * 0.1;
-
-    if (movedPx < -threshold) {
-      goToSlide(currentIndex + 1);
-    } else if (movedPx > threshold) {
-      goToSlide(currentIndex - 1);
-    } else {
-      goToSlide(currentIndex);
-    }
-
-    resetAutoSlide();
-  }
-
-  carousel.addEventListener('mousedown', dragStart);
-  carousel.addEventListener('mousemove', dragMove);
-  carousel.addEventListener('mouseup', dragEnd);
-  carousel.addEventListener('mouseleave', dragEnd);
-  carousel.addEventListener('touchstart', dragStart, { passive: true });
-  carousel.addEventListener('touchmove', dragMove, { passive: true });
-  carousel.addEventListener('touchend', dragEnd);
-
-  carousel.addEventListener('dragstart', (e) => e.preventDefault());
-
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      goToSlide(currentIndex - 1);
-      resetAutoSlide();
-    }
-    if (e.key === 'ArrowRight') {
-      goToSlide(currentIndex + 1);
-      resetAutoSlide();
-    }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
+    if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
   });
-
-  startAutoSlide();
 
   // =========================================
   // Water Surface Trail Effect
