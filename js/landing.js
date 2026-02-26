@@ -178,9 +178,12 @@
     var nowS = now * 0.001;
     trailPts.push({ x: x, y: y, t: nowS });
     if (prevPX >= 0 && (now - lastDisturbTime) > DISTURB_INTERVAL) {
-      disturb(x, y, 5, 3);
-      lastDisturbTime = now;
-      prevPX = x; prevPY = y;
+      var dx = x - prevPX, dy = y - prevPY;
+      if (dx * dx + dy * dy > 900) {
+        disturb(x, y, 5, 3);
+        lastDisturbTime = now;
+        prevPX = x; prevPY = y;
+      }
     } else if (prevPX < 0) {
       prevPX = x; prevPY = y;
     }
