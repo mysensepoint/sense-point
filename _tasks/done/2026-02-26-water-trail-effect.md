@@ -63,9 +63,9 @@
 
 ## 기대 산출물
 
-- [ ] `js/landing.js` — Water Ripple Effect 섹션 교체 (수면 트레일 효과)
-- [ ] 필요 시 `index.html`의 캔버스 관련 마크업 수정
-- [ ] 필요 시 `css/landing.css`의 캔버스 관련 스타일 수정
+- [x] `js/landing.js` — Water Ripple Effect 섹션 교체 (Water Drop Effect)
+- [x] `css/variables.css` — 캔버스 z-index 수정
+- [x] `css/landing.css` — 캐러셀 커서/드래그 스타일 제거
 
 ---
 
@@ -74,24 +74,25 @@
 > 이 섹션은 작업을 수행하는 프로젝트 Cursor가 작성합니다.
 
 **완료일:** 2026-02-26
-**소요시간:** ~15분
+**소요시간:** 약 1시간 (반복 튜닝 포함)
 **상태:** 완료
 
 ### 수행 내역
 
-- `js/landing.js`의 Water Ripple Effect 섹션(기존 154~258줄)을 **Water Surface Trail Effect**로 전면 교체
-- 기존 동심원 확장 방식(Ripple 클래스) → 마우스 경로 기반 수면 트레일 방식으로 개선
-- **TrailWave**: 마우스 이동 경로에 타원형 파동 생성 (이동 방향에 수직으로 넓게 퍼짐)
-  - 이동 속도에 비례하여 파동 크기·불투명도·링 수 자동 조절
-  - 사인파 왜곡으로 유기적인 수면 느낌 구현
-- **SplashWave**: 클릭 시 원형 파장 (기존 동작 유지, 더 자연스러운 물결)
-- **Trail Glow**: 마우스 경로를 따라 부드러운 발광 트레일 (3단계 패스로 글로우 효과)
-- 터치 이벤트 지원 (touchmove + touchend)
-- mouseleave/touchend 시 포인터 추적 리셋 (이전 좌표 오염 방지)
+- `js/landing.js`의 Water Ripple Effect 섹션(기존 154~258줄)을 **Water Drop Effect**로 전면 교체
+- 기존 동심원 확장 방식(Ripple 클래스) → 단일 물방울 파문 방식으로 개선
+- **최종 구현**: 마우스 이동 시 약 0.9초 간격 + 30px 이동 조건으로 한 지점에 원 하나가 퍼지며 사라짐
+- **클릭**: 약간 더 크고 빠른 파문 생성 (반경 160px)
+- **Trail Glow**: 마우스 경로를 따라 은은한 발광 트레일 (3단계 패스)
+- 터치 이벤트 지원, 포인터 리셋 처리
+- 캐러셀 변경: 자동 슬라이드·드래그/스와이프 제거, 화살표 버튼+키보드만 유지
+- 캔버스 z-index 0→3으로 올려 배너 위에 렌더링되도록 수정
 
 ### 변경된 파일
 
-- `js/landing.js` — Water Ripple Effect 섹션 → Water Surface Trail Effect로 교체 (154~354줄)
+- `js/landing.js` — Water Ripple Effect → Water Drop Effect 교체, 캐러셀 단순화
+- `css/variables.css` — `--z-ripple: 0` → `3`
+- `css/landing.css` — `cursor: grab`, `.is-dragging` 스타일 제거
 
 ### 미해결 사항
 
@@ -99,8 +100,8 @@
 
 ### 비고
 
-- `index.html`과 `css/landing.css`의 캔버스 관련 마크업·스타일은 변경 불필요 (기존 구조 그대로 활용)
-- 캐러셀 변수명과 충돌 방지를 위해 캔버스 크기 변수를 `cvW`/`cvH`로 분리
-- MAX_WAVES=100, SPAWN_GAP=40ms로 모바일 성능 고려
-- accent 색상 `rgba(200,169,110)` 유지
+- 초기 지시서는 "수면 트레일" 효과를 요청했으나, 사용자와 반복 튜닝을 거쳐 **단일 물방울 파문** 방식으로 최종 확정
+- 흰색 무채색(rgba 255,255,255) 사용, 배너 텍스트·이미지 가독성에 영향 없음
+- heightmap 시뮬레이션 → 타원 파동 → 단일 링 순으로 3차례 방식 변경 (사용자 피드백 반영)
+- 캐러셀 자동슬라이드·드래그 제거는 별도 지시(SP-002 작업 중 추가 요청)
 
