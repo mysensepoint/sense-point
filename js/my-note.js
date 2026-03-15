@@ -270,6 +270,184 @@
   }
 
   // =========================================
+  // Markdown Parser
+  // =========================================
+
+  function looksLikeMarkdown(text) {
+    if (/^#{1,6}\s+.+/m.test(text)) return true;
+    if (/^\|.+\|[\s]*\n\|[\s\-:| ]+\|/m.test(text)) return true;
+    if (/^```/m.test(text)) return true;
+
+    var count = 0;
+    if (/\*\*.+?\*\*/m.test(text)) count++;
+    if (/^[-*+]\s+/m.test(text)) count++;
+    if (/^\d+\.\s+/m.test(text)) count++;
+    if (/^>\s/m.test(text)) count++;
+    if (/\[.+?\]\(.+?\)/m.test(text)) count++;
+    if (/~~.+?~~/m.test(text)) count++;
+    return count >= 2;
+  }
+
+  function inlineMd(text) {
+    text = escapeHtml(text);
+    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="md-img">');
+    text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+    text = text.replace(/~~(.+?)~~/g, '<del>$1</del>');
+    text = text.replace(/`(.+?)`/g, '<code class="md-inline-code">$1</code>');
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="md-link" target="_blank" rel="noopener">$1</a>');
+    return text;
+  }
+
+  function parseTableBlock(lines, start) {
+    var headerCells = splitTableRow(lines[start]);
+    var i = start + 2;
+    var bodyRows = [];
+    while (i < lines.length && /^\|.+\|/.test(lines[i].trim())) {
+      bodyRows.push(splitTableRow(lines[i]));
+      i++;
+    }
+    var h = '<table class="md-table"><thead><tr>' +
+      headerCells.map(function (c) { return '<th>' + inlineMd(c) + '</th>'; }).join('') +
+      '</tr></thead>';
+    if (bodyRows.length) {
+      h += '<tbody>' + bodyRows.map(function (row) {
+        return '<tr>' + row.map(function (c) { return '<td>' + inlineMd(c) + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</tbody>';
+    }
+    h += '</table>';
+    return { html: h, end: i };
+  }
+
+  function splitTableRow(line) {
+    var cells = line.split('|');
+    if (cells[0].trim() === '') cells.shift();
+    if (cells.length && cells[cells.length - 1].trim() === '') cells.pop();
+    return cells.map(function (c) { return c.trim(); });
+  }
+
+  function markdownToHtml(md) {
+    var lines = md.split('\n');
+    var out = [];
+    var i = 0;
+
+    while (i < lines.length) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      if (trimmed.indexOf('```') === 0) {
+        var codeLines = [];
+        i++;
+        while (i < lines.length && lines[i].trim().indexOf('```') !== 0) {
+          codeLines.push(lines[i]);
+          i++;
+        }
+        i++;
+        out.push('<pre class="md-codeblock"><code>' + escapeHtml(codeLines.join('\n')) + '</code></pre>');
+        continue;
+      }
+
+      if (/^\|.+\|/.test(trimmed) && i + 1 < lines.length && /^\|[\s\-:|]+\|/.test(lines[i + 1].trim())) {
+        var tbl = parseTableBlock(lines, i);
+        out.push(tbl.html);
+        i = tbl.end;
+        continue;
+      }
+
+      var hMatch = trimmed.match(/^(#{1,6})\s+(.+?)(?:\s+#+)?$/);
+      if (hMatch) {
+        var lvl = hMatch[1].length;
+        out.push('<h' + lvl + ' class="md-heading md-h' + lvl + '">' + inlineMd(hMatch[2]) + '</h' + lvl + '>');
+        i++;
+        continue;
+      }
+
+      if (/^[-*_]{3,}\s*$/.test(trimmed)) {
+        out.push('<hr class="md-hr">');
+        i++;
+        continue;
+      }
+
+      if (/^>/.test(trimmed)) {
+        var qLines = [];
+        while (i < lines.length && /^>/.test(lines[i].trim())) {
+          qLines.push(lines[i].replace(/^>\s?/, ''));
+          i++;
+        }
+        out.push('<blockquote class="md-blockquote">' + qLines.map(inlineMd).join('<br>') + '</blockquote>');
+        continue;
+      }
+
+      if (/^\s*[-*+]\s+\[[ xX]\]/.test(line)) {
+        var checks = [];
+        while (i < lines.length && /^\s*[-*+]\s+\[[ xX]\]/.test(lines[i])) {
+          var done = /\[[xX]\]/.test(lines[i]);
+          var txt = lines[i].replace(/^\s*[-*+]\s+\[[ xX]\]\s*/, '');
+          checks.push('<li class="md-check-item' + (done ? ' is-checked' : '') + '">' +
+            '<span class="md-checkbox">' + (done ? '\u2611' : '\u2610') + '</span> ' +
+            inlineMd(txt) + '</li>');
+          i++;
+        }
+        out.push('<ul class="md-checklist">' + checks.join('') + '</ul>');
+        continue;
+      }
+
+      if (/^\s*[-*+]\s+/.test(line)) {
+        var ulItems = [];
+        while (i < lines.length && /^\s*[-*+]\s+/.test(lines[i])) {
+          ulItems.push('<li>' + inlineMd(lines[i].replace(/^\s*[-*+]\s+/, '')) + '</li>');
+          i++;
+        }
+        out.push('<ul class="md-list">' + ulItems.join('') + '</ul>');
+        continue;
+      }
+
+      if (/^\s*\d+\.\s+/.test(line)) {
+        var olItems = [];
+        while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) {
+          olItems.push('<li>' + inlineMd(lines[i].replace(/^\s*\d+\.\s+/, '')) + '</li>');
+          i++;
+        }
+        out.push('<ol class="md-list md-ol">' + olItems.join('') + '</ol>');
+        continue;
+      }
+
+      if (trimmed === '') { i++; continue; }
+
+      var pLines = [];
+      while (i < lines.length) {
+        var pl = lines[i]; var pt = pl.trim();
+        if (pt === '' || /^#{1,6}\s/.test(pt) || /^[-*_]{3,}\s*$/.test(pt) ||
+            /^>/.test(pt) || /^\s*[-*+]\s+/.test(pl) || /^\s*\d+\.\s+/.test(pl) ||
+            /^\|.+\|/.test(pt) || pt.indexOf('```') === 0) break;
+        pLines.push(pl);
+        i++;
+      }
+      if (pLines.length) {
+        out.push('<p>' + pLines.map(inlineMd).join('<br>') + '</p>');
+      }
+    }
+    return out.join('\n');
+  }
+
+  // =========================================
+  // Markdown Paste Handler
+  // =========================================
+
+  blankContent.addEventListener('paste', function (e) {
+    var clipboard = e.clipboardData || window.clipboardData;
+    if (!clipboard) return;
+
+    var plain = clipboard.getData('text/plain');
+    if (!plain || !looksLikeMarkdown(plain)) return;
+
+    e.preventDefault();
+    var html = markdownToHtml(plain);
+    document.execCommand('insertHTML', false, html);
+  });
+
+  // =========================================
   // Note Type Switch
   // =========================================
 
@@ -325,7 +503,8 @@
       return {
         type: 'blank',
         title: blankTitle.value.trim(),
-        content: getPlainText(blankContent).trim()
+        content: getPlainText(blankContent).trim(),
+        htmlContent: blankContent.innerHTML
       };
     }
 
@@ -349,7 +528,11 @@
 
     if (note.type === 'blank') {
       blankTitle.value = note.title || '';
-      blankContent.textContent = note.content || '';
+      if (note.htmlContent) {
+        blankContent.innerHTML = note.htmlContent;
+      } else {
+        blankContent.textContent = note.content || '';
+      }
     } else {
       templateTitle.value = note.title || '';
       var inputs = templateForm.querySelectorAll('.my-note__question-input');
@@ -1011,6 +1194,9 @@
 
   var REPLY_ICON = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
   var PIN_ICON_SM = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.09 3.26L16 6l-2 2 .71 3.54L12 9.91 9.29 11.54 10 8 8 6l2.91-.74L12 2z"/></svg>';
+  var REPLY_EDIT_ICON = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  var REPLY_DELETE_ICON = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  var REPLY_SAVE_ICON = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
   function buildVisibilityDropdownHTML(currentVisibility) {
     var items = VISIBILITY_ORDER.map(function (v) {
@@ -1048,8 +1234,6 @@
     var vis = memo.visibility || VISIBILITY.PRIVATE;
     var src = memo.source || 'my-note';
 
-    var repliesHtml = buildRepliesHtml(memo.replies || []);
-
     var sourceBadgeHtml = '';
     if (src !== 'my-note') {
       sourceBadgeHtml = '<span class="memo-block__source-badge" data-source="' + src + '">' + (SOURCE_LABELS[src] || src) + '</span>';
@@ -1083,7 +1267,6 @@
       '<div class="memo-block__body">' +
         '<textarea class="memo-block__note" placeholder="메모를 작성하세요...">' + escapeHtml(memo.note) + '</textarea>' +
       '</div>' +
-      repliesHtml +
       '<div class="memo-block__reply-action">' +
         '<button class="memo-block__reply-btn">' +
           REPLY_ICON +
@@ -1106,27 +1289,122 @@
         '<span class="memo-block__time">' + formatTimeShort(memo.createdAt) + '</span>' +
       '</div>';
 
+    renderRepliesSection(memo, block);
     bindMemoBlockEvents(block, memo);
     (container || memosList).appendChild(block);
   }
 
-  function buildRepliesHtml(replies) {
-    if (!replies || replies.length === 0) return '';
+  function renderRepliesSection(memo, block) {
+    if (!memo.replies || memo.replies.length === 0) return;
+    var container = document.createElement('div');
+    container.className = 'memo-block__replies';
+    memo.replies.forEach(function (r) {
+      container.appendChild(createReplyElement(r, memo));
+    });
+    var action = block.querySelector('.memo-block__reply-action');
+    if (action) block.insertBefore(container, action);
+    else block.appendChild(container);
+  }
 
-    var items = replies.map(function (r) {
-      return (
-        '<div class="memo-reply">' +
-          '<div class="memo-reply__header">' +
-            '<span class="memo-reply__avatar">' + escapeHtml(r.avatarInitial || '나') + '</span>' +
-            '<span class="memo-reply__author">' + escapeHtml(r.author || '나') + '</span>' +
-            '<span class="memo-reply__time">' + formatTimeShort(r.createdAt) + '</span>' +
-          '</div>' +
-          '<p class="memo-reply__note">' + escapeHtml(r.note) + '</p>' +
-        '</div>'
-      );
-    }).join('');
+  function createReplyElement(reply, memo) {
+    var el = document.createElement('div');
+    el.className = 'memo-reply';
+    el.dataset.replyId = reply.id;
+    el.innerHTML =
+      '<div class="memo-reply__header">' +
+        '<span class="memo-reply__avatar">' + escapeHtml(reply.avatarInitial || '나') + '</span>' +
+        '<span class="memo-reply__author">' + escapeHtml(reply.author || '나') + '</span>' +
+        '<span class="memo-reply__time">' + formatTimeShort(reply.createdAt) + '</span>' +
+        '<div class="memo-reply__actions">' +
+          '<button class="memo-reply__edit-btn" title="수정">' + REPLY_EDIT_ICON + '</button>' +
+          '<button class="memo-reply__delete-btn" title="삭제">' + REPLY_DELETE_ICON + '</button>' +
+        '</div>' +
+      '</div>' +
+      '<p class="memo-reply__note">' + escapeHtml(reply.note) + '</p>';
+    bindReplyItemEvents(el, reply, memo);
+    return el;
+  }
 
-    return '<div class="memo-block__replies">' + items + '</div>';
+  function bindReplyItemEvents(el, reply, memo) {
+    var editBtn = el.querySelector('.memo-reply__edit-btn');
+    var deleteBtn = el.querySelector('.memo-reply__delete-btn');
+    editBtn.onclick = function (e) {
+      e.stopPropagation();
+      startEditReply(el, reply, memo);
+    };
+    deleteBtn.onclick = function (e) {
+      e.stopPropagation();
+      deleteReply(el, reply, memo);
+    };
+  }
+
+  function startEditReply(el, reply, memo) {
+    var noteEl = el.querySelector('.memo-reply__note');
+    var editBtn = el.querySelector('.memo-reply__edit-btn');
+    var deleteBtn = el.querySelector('.memo-reply__delete-btn');
+    var origText = reply.note;
+
+    var textarea = document.createElement('textarea');
+    textarea.className = 'memo-reply__edit-textarea';
+    textarea.value = origText;
+    textarea.rows = 2;
+    textarea.addEventListener('click', function (e) { e.stopPropagation(); });
+    textarea.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveEdit(); }
+      if (e.key === 'Escape') { cancelEdit(); }
+    });
+    noteEl.replaceWith(textarea);
+    textarea.focus();
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+    editBtn.innerHTML = REPLY_SAVE_ICON;
+    editBtn.title = '저장';
+    deleteBtn.innerHTML = REPLY_DELETE_ICON;
+    deleteBtn.title = '취소';
+
+    editBtn.onclick = function (e) { e.stopPropagation(); saveEdit(); };
+    deleteBtn.onclick = function (e) { e.stopPropagation(); cancelEdit(); };
+
+    function saveEdit() {
+      var newText = textarea.value.trim();
+      if (!newText) return;
+      reply.note = newText;
+      reply.updatedAt = Date.now();
+      memo.updatedAt = Date.now();
+      syncSingleMemoToShared(memo);
+      var newP = document.createElement('p');
+      newP.className = 'memo-reply__note';
+      newP.textContent = newText;
+      textarea.replaceWith(newP);
+      restoreButtons();
+    }
+
+    function cancelEdit() {
+      var origP = document.createElement('p');
+      origP.className = 'memo-reply__note';
+      origP.textContent = origText;
+      textarea.replaceWith(origP);
+      restoreButtons();
+    }
+
+    function restoreButtons() {
+      editBtn.innerHTML = REPLY_EDIT_ICON;
+      editBtn.title = '수정';
+      deleteBtn.innerHTML = REPLY_DELETE_ICON;
+      deleteBtn.title = '삭제';
+      bindReplyItemEvents(el, reply, memo);
+    }
+  }
+
+  function deleteReply(el, reply, memo) {
+    var container = el.closest('.memo-block__replies');
+    if (!memo.replies) return;
+    var idx = memo.replies.findIndex(function (r) { return r.id === reply.id; });
+    if (idx !== -1) memo.replies.splice(idx, 1);
+    memo.updatedAt = Date.now();
+    syncSingleMemoToShared(memo);
+    el.remove();
+    if (container && container.children.length === 0) container.remove();
   }
 
   function bindMemoBlockEvents(block, memo) {
@@ -1254,15 +1532,7 @@
       memo.updatedAt = Date.now();
       syncSingleMemoToShared(memo);
 
-      var replyEl = document.createElement('div');
-      replyEl.className = 'memo-reply';
-      replyEl.innerHTML =
-        '<div class="memo-reply__header">' +
-          '<span class="memo-reply__avatar">나</span>' +
-          '<span class="memo-reply__author">나</span>' +
-          '<span class="memo-reply__time">' + formatTimeShort(reply.createdAt) + '</span>' +
-        '</div>' +
-        '<p class="memo-reply__note">' + escapeHtml(text) + '</p>';
+      var replyEl = createReplyElement(reply, memo);
 
       var repliesContainer = block.querySelector('.memo-block__replies');
       if (!repliesContainer) {
@@ -1791,6 +2061,17 @@
       e.preventDefault();
       saveNote();
     }
+  });
+
+  // =========================================
+  // Expand / Collapse (전체보기)
+  // =========================================
+
+  var expandBtn = document.getElementById('expandBtn');
+  var myNoteContainer = document.querySelector('.my-note');
+
+  expandBtn.addEventListener('click', function () {
+    myNoteContainer.classList.toggle('is-expanded');
   });
 
   // =========================================

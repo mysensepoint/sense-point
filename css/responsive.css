@@ -4,13 +4,18 @@
 
 @media (max-width: 1024px) {
   :root {
-    --menu-width: 35%;
+    --menu-width: 360px;
     --sidebar-width: 30%;
     --main-width: 70%;
   }
 
   .header {
-    padding: 0 var(--space-xl);
+    padding: 16px var(--space-xl);
+    min-width: 0;
+  }
+
+  .landing__banner-slide {
+    padding: 80px 60px 40px;
   }
 
   .landing__banner-title {
@@ -22,8 +27,8 @@
   }
 
   .landing__banner-nav {
-    bottom: var(--space-xl);
-    right: var(--space-xl);
+    bottom: 40px;
+    right: 40px;
   }
 
   .sense-makers__content {
@@ -68,13 +73,14 @@
 
 @media (max-width: 767px) {
   :root {
-    --header-height: 60px;
-    --content-height: calc(100vh - 60px);
-    --menu-width: 80%;
+    --header-height: 48px;
+    --content-height: calc(100vh - 48px);
+    --menu-width: 100%;
   }
 
   .header {
-    padding: 0 var(--space-md);
+    padding: 12px var(--space-md);
+    min-width: 0;
   }
 
   .header__logo {
@@ -87,8 +93,12 @@
   }
 
   /* Landing */
+  .landing__banner-slide {
+    padding: 60px 24px 24px;
+  }
+
   .landing__banner-content {
-    padding: var(--space-xl) var(--space-md);
+    padding: 0;
   }
 
   .landing__banner-title {
@@ -100,31 +110,32 @@
   }
 
   .landing__banner-nav {
-    bottom: var(--space-lg);
-    right: var(--space-lg);
+    bottom: 24px;
+    right: 24px;
   }
 
   .landing__banner-nav-btn {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
   }
 
   /* Menu */
   .menu-panel__header {
-    padding: 0 var(--space-md);
+    padding: 24px;
+    gap: 16px;
   }
 
   .menu-panel__nav {
-    padding: var(--space-xl) var(--space-md);
-    gap: var(--space-md);
+    padding: 24px;
+    gap: 16px;
   }
 
   .menu-panel__nav-item {
-    font-size: var(--text-lg);
+    font-size: var(--text-2xl);
   }
 
   .menu-panel__footer {
-    padding: var(--space-sm) var(--space-md);
+    padding: 16px 24px;
   }
 
   /* Sense Makers - 모바일에선 세로 스택 */

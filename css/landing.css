@@ -1,5 +1,5 @@
 /* =========================================
-   LANDING PAGE
+   LANDING PAGE — Figma Design
    ========================================= */
 
 .landing {
@@ -20,7 +20,7 @@
   pointer-events: none;
 }
 
-/* Banner Carousel */
+/* Banner Carousel — Hero */
 .landing__banner {
   position: relative;
   width: 100%;
@@ -35,14 +35,18 @@
   will-change: transform;
 }
 
+/* Slide — 피그마: 1440x844, padding 130px 100px 40px */
 .landing__banner-slide {
   flex: 0 0 100%;
   width: 100%;
   height: 100%;
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 130px 100px 40px;
+  background: var(--color-surface);
   overflow: hidden;
 }
 
@@ -56,99 +60,139 @@
   opacity: 0.4;
 }
 
+/* Content — 왼쪽 정렬, gap 16px */
 .landing__banner-content {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-lg);
-  padding: var(--space-2xl);
-  max-width: 800px;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 607px;
 }
 
+/* Category — System/text-2xl, Accent */
 .landing__banner-tag {
-  font-size: var(--text-sm);
+  font-family: var(--font-primary);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 150%;
   color: var(--color-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-weight: 500;
 }
 
+/* Title — Main/text-5xl, Text Primary */
 .landing__banner-title {
   font-family: var(--font-display);
   font-size: var(--text-5xl);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 130%;
   color: var(--color-text-primary);
 }
 
+/* Description — Main/text-lg, Text Secondary */
 .landing__banner-desc {
+  font-family: var(--font-display);
   font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 170%;
   color: var(--color-text-secondary);
-  line-height: 1.7;
-  max-width: 560px;
+  max-width: 377px;
 }
 
+/* Button — 피그마: 170x52, border-radius 30px */
 .landing__banner-cta {
-  margin-top: var(--space-md);
-  padding: var(--space-md) var(--space-2xl);
-  border: 1px solid var(--color-accent);
+  margin-top: 34px; /* spacer 50px - gap 16px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 30px;
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 150%;
   color: var(--color-accent);
-  font-size: var(--text-sm);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-radius: var(--radius-full);
+  text-align: center;
   transition: all var(--transition-base);
 }
 
 .landing__banner-cta:hover {
-  background: var(--color-accent);
-  color: var(--color-bg);
+  background: var(--color-border);
+  color: var(--color-white);
+  border-color: var(--color-border);
 }
 
-/* Banner Navigation Arrows - 우측 하단 */
-.landing__banner-nav {
-  position: absolute;
-  bottom: var(--space-2xl);
-  right: var(--space-2xl);
+/* Bottom — meta 텍스트 */
+.landing__banner-bottom {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 108px;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.landing__banner-meta {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 170%;
+  text-align: center;
+  color: var(--color-text-primary);
+}
+
+/* Spacer — 슬라이드 중간 공간 (flex-grow) */
+.landing__banner-spacer {
+  flex: 1;
+}
+
+/* Banner Navigation — 우측 하단, 피그마: 141x40 */
+.landing__banner-nav {
+  position: absolute;
+  bottom: 40px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 0;
   z-index: 5;
 }
 
+/* Prev/Next — 40x40, border */
 .landing__banner-nav-btn {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--color-border);
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
+  color: var(--color-border);
   transition: all var(--transition-fast);
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(8px);
+  background: transparent;
 }
 
 .landing__banner-nav-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  background: var(--color-border);
+  border-color: var(--color-border);
+  color: var(--color-white);
 }
 
 .landing__banner-nav-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
+/* Page indicator — 가운데, System/text-sm */
 .landing__banner-counter {
+  font-family: var(--font-primary);
   font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-weight: 400;
+  line-height: 150%;
+  color: var(--color-text-primary);
   font-variant-numeric: tabular-nums;
-  min-width: 44px;
+  min-width: 62px;
   text-align: center;
 }
 
@@ -157,15 +201,7 @@
   font-weight: 600;
 }
 
-/* Slide gradient overlays */
+/* Slide gradient — 라이트 테마에서는 불필요, 제거 */
 .landing__banner-slide::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 40%;
-  background: linear-gradient(to top, var(--color-bg), transparent);
-  z-index: 1;
-  pointer-events: none;
+  display: none;
 }

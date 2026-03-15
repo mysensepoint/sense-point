@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sense Makers - SensePoint</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/sense-makers-list.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="header__logo">
+      <img src="img/logo-horizontal.svg" alt="SensePoint" class="header__logo-img">
+    </a>
+    <button class="header__menu-btn" id="menuToggle" aria-label="메뉴 열기">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Menu Overlay -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
+  <nav class="menu-panel" id="menuPanel">
+    <div class="menu-panel__header">
+      <a href="index.html" class="menu-panel__logo">SensePoint</a>
+      <button class="menu-panel__auth" id="authBtn">Login</button>
+      <button class="menu-panel__auth menu-panel__auth--secondary" onclick="location.href='signup.html'">Signup</button>
+    </div>
+    <ul class="menu-panel__nav">
+      <li><a href="my-note.html" class="menu-panel__nav-item">My Note</a></li>
+      <li><a href="sense-makers-list.html" class="menu-panel__nav-item is-active">Sense Makers</a></li>
+      <li><a href="square.html" class="menu-panel__nav-item">Square</a></li>
+      <li><a href="knitting/index.html" class="menu-panel__nav-item">뜨개질</a></li>
+    </ul>
+    <div class="menu-panel__footer">
+      <p class="menu-panel__footer-text">© 2026 SensePoint. All rights reserved.</p>
+      <p class="menu-panel__footer-text">contact@sensepoint.kr</p>
+      <p class="menu-panel__footer-text">02-1234-5678</p>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="sm-list">
+
+      <!-- Page Header -->
+      <section class="sm-list__hero">
+        <span class="sm-list__hero-tag">감동의 기록</span>
+        <h1 class="sm-list__hero-title">Sense Makers</h1>
+        <p class="sm-list__hero-desc">사람이 사람에게 전하고자 한 감동의 기록.<br>익숙한 일상 뒤에 숨겨진 손길과 마음을, 천천히 들여다봅니다.</p>
+      </section>
+
+      <!-- Category Filter -->
+      <nav class="sm-list__filter" id="categoryFilter">
+        <button class="sm-list__filter-tab is-active" data-category="all">All</button>
+        <button class="sm-list__filter-tab" data-category="space">Space</button>
+        <button class="sm-list__filter-tab" data-category="sound">Sound</button>
+        <button class="sm-list__filter-tab" data-category="flavor">Flavor</button>
+        <button class="sm-list__filter-tab" data-category="craft">Craft</button>
+        <button class="sm-list__filter-tab" data-category="light">Light</button>
+      </nav>
+
+      <!-- Content Grid -->
+      <div class="sm-list__grid" id="contentGrid">
+        <!-- JS에서 동적 렌더링 -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="sm-list__empty" id="listEmpty" style="display:none">
+        <p>이 영역의 이야기는 아직 준비 중입니다.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/sense-makers-list.js"></script>
+</body>
+</html>

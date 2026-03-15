@@ -594,8 +594,9 @@
 
 .memo-block.is-selected {
   background: var(--color-memo-selected);
-  min-height: auto;
-  max-height: none;
+  min-height: calc(var(--text-sm) * 1.5 * 10 + calc(var(--memo-fold-size) + 6px) + var(--space-md) + 24px);
+  max-height: calc(var(--text-sm) * 1.5 * 10 + calc(var(--memo-fold-size) + 6px) + var(--space-md) + 24px);
+  overflow: visible;
   box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 

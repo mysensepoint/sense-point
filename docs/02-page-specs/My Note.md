@@ -94,10 +94,11 @@ My Note는 SensePoint의 **개인 기록 허브** 역할을 한다.
 └─────────────────────────────────────┘
 ```
 
-| 요소 | 태그 | 스타일 |
-|------|------|--------|
-| 제목 | `<input type="text">` | Playfair Display, 3xl, bold |
-| 본문 | `<div contenteditable>` | Pretendard, base, line-height 1.85 |
+| 요소  | 태그                      | 스타일                                |
+| --- | ----------------------- | ---------------------------------- |
+| 제목  | `<input type="text">`   | Playfair Display, 3xl, bold        |
+| 본문  | `<div contenteditable>` | Pretendard, base, line-height 1.85 |
+|     |                         |                                    |
 
 #### 텍스트 인터랙션
 

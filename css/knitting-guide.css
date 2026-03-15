@@ -1,0 +1,1181 @@
+/* =========================================
+   KNITTING GUIDE PAGE
+   ========================================= */
+
+/* ── Hero ────────────────────────────── */
+
+.kg-hero {
+  position: relative;
+  width: 100%;
+  min-height: var(--content-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.kg-hero__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(200, 169, 110, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, rgba(125, 184, 212, 0.06) 0%, transparent 50%),
+    linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0d1b2a 100%);
+}
+
+.kg-hero__inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: var(--space-3xl) var(--space-2xl);
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.kg-hero__tag {
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+}
+
+.kg-hero__title {
+  font-family: var(--font-primary);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.05em;
+}
+
+.kg-hero__subtitle {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-accent);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.kg-hero__desc {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.kg-hero__cta {
+  margin-top: var(--space-md);
+  padding: var(--space-md) var(--space-2xl);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+}
+
+.kg-hero__cta:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* ── Section ─────────────────────────── */
+
+.kg-section {
+  padding: 120px var(--space-2xl);
+}
+
+.kg-section--dark {
+  background: var(--color-bg-secondary);
+}
+
+.kg-section__inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.kg-section__title {
+  font-family: var(--font-primary);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.kg-section__lead {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  text-align: center;
+  margin-bottom: 64px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kg-section__lead strong {
+  color: var(--color-accent);
+}
+
+/* ── Concept Cards ───────────────────── */
+
+.kg-concept {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+.kg-concept__item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+  transition: border-color var(--transition-base);
+}
+
+.kg-concept__item:hover {
+  border-color: var(--color-accent);
+}
+
+.kg-concept__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-lg);
+  color: var(--color-accent);
+}
+
+.kg-concept__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.kg-concept__name {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.kg-concept__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.kg-concept__desc em {
+  color: var(--color-accent);
+  font-style: normal;
+}
+
+/* ── Three Modes ─────────────────────── */
+
+.kg-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.kg-mode {
+  display: flex;
+  gap: var(--space-2xl);
+  align-items: flex-start;
+}
+
+.kg-mode__num {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--color-border);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 120px;
+  text-align: right;
+}
+
+.kg-mode__content {
+  flex: 1;
+  padding-top: 12px;
+}
+
+.kg-mode__title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.kg-mode__subtitle {
+  font-size: var(--text-base);
+  color: var(--color-accent);
+  margin-bottom: var(--space-lg);
+}
+
+.kg-mode__desc {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--space-xl);
+}
+
+.kg-mode__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.kg-mode__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.kg-mode__step strong {
+  color: var(--color-text-primary);
+}
+
+.kg-mode__step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── Why Knitting ────────────────────── */
+
+.kg-why {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.kg-why__item {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: flex-start;
+}
+
+.kg-why__marker {
+  width: 4px;
+  min-height: 80px;
+  background: linear-gradient(to bottom, var(--color-accent), transparent);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.kg-why__text h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.kg-why__text p {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.kg-why__text em {
+  color: var(--color-accent);
+  font-style: normal;
+}
+
+/* ── Example Thread ──────────────────── */
+
+.kg-example {
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.kg-example__thread {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+}
+
+.kg-example__thread-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.kg-example__thread-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.kg-example__thread-name {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.kg-example__line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-accent), transparent);
+}
+
+.kg-example__stitches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  position: relative;
+  padding-left: 24px;
+}
+
+.kg-example__stitches::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), rgba(200, 169, 110, 0.2));
+  border-radius: 1px;
+}
+
+.kg-example__stitch {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  position: relative;
+}
+
+.kg-example__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.kg-example__card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  flex: 1;
+  transition: border-color var(--transition-base);
+}
+
+.kg-example__card:hover {
+  border-color: rgba(200, 169, 110, 0.4);
+}
+
+.kg-example__card h4 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.kg-example__excerpt {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--color-border);
+}
+
+.kg-example__persp {
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+}
+
+/* ── CTA ─────────────────────────────── */
+
+.kg-cta {
+  padding: 100px var(--space-2xl);
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 80%, rgba(200, 169, 110, 0.06) 0%, transparent 50%),
+    var(--color-bg);
+}
+
+.kg-cta__inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.kg-cta__title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.kg-cta__desc {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2xl);
+  line-height: 1.7;
+}
+
+.kg-cta__btn {
+  display: inline-block;
+  padding: var(--space-md) var(--space-3xl);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-size: var(--text-base);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+}
+
+.kg-cta__btn:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(200, 169, 110, 0.2);
+}
+
+/* ── Tutorial Progress ────────────────── */
+
+.tut-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 56px;
+}
+
+.tut-progress__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.tut-progress__num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  transition: all var(--transition-base);
+}
+
+.tut-progress__label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  transition: color var(--transition-base);
+}
+
+.tut-progress__step.is-active .tut-progress__num {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(200, 169, 110, 0.1);
+}
+
+.tut-progress__step.is-active .tut-progress__label {
+  color: var(--color-accent);
+}
+
+.tut-progress__step.is-done .tut-progress__num {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.tut-progress__step.is-done .tut-progress__label {
+  color: var(--color-text-secondary);
+}
+
+.tut-progress__line {
+  width: 80px;
+  height: 2px;
+  background: var(--color-border);
+  margin: 0 12px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tut-progress__line span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--color-accent);
+  transition: width 0.5s ease;
+}
+
+.tut-progress__line.is-filled span {
+  width: 100%;
+}
+
+/* ── Tutorial Stage ──────────────────── */
+
+.tut-stage {
+  position: relative;
+  min-height: 500px;
+}
+
+.tut-step {
+  display: none;
+  animation: tutFadeIn 0.4s ease;
+}
+
+.tut-step.is-active {
+  display: block;
+}
+
+@keyframes tutFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tut-step__guide {
+  margin-bottom: 40px;
+}
+
+.tut-step__guide h3 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.tut-step__guide p {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.tut-step__guide strong {
+  color: var(--color-accent);
+}
+
+.tut-step__area {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+}
+
+.tut-step__done {
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  margin-top: var(--space-md);
+  font-weight: 500;
+}
+
+/* ── Step 1: Thread Create ───────────── */
+
+.tut-thread-create {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.tut-thread-create__btn {
+  padding: 16px 40px;
+  border: 2px dashed var(--color-accent);
+  border-radius: var(--radius-lg);
+  color: var(--color-accent);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  background: rgba(200, 169, 110, 0.05);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  animation: tutPulse 2s infinite;
+}
+
+.tut-thread-create__btn:hover {
+  background: rgba(200, 169, 110, 0.12);
+  border-style: solid;
+}
+
+@keyframes tutPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 169, 110, 0.3); }
+  50%      { box-shadow: 0 0 0 12px rgba(200, 169, 110, 0); }
+}
+
+.tut-thread-form {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  animation: tutFadeIn 0.3s ease;
+}
+
+.tut-thread-form__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.tut-thread-form__input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-family: var(--font-primary);
+  transition: border-color var(--transition-fast);
+}
+
+.tut-thread-form__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.tut-thread-form__submit {
+  padding: 12px 24px;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  margin-top: var(--space-sm);
+}
+
+.tut-thread-form__submit:hover {
+  background: var(--color-accent-hover);
+}
+
+.tut-thread-result {
+  text-align: center;
+  padding: 32px 0;
+  animation: tutFadeIn 0.4s ease;
+}
+
+.tut-thread-result__line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: var(--space-md);
+}
+
+.tut-thread-result__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tut-thread-result__name {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.tut-thread-result__dash {
+  flex: 1;
+  max-width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-accent), transparent);
+}
+
+.tut-thread-result__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ── Step 2: Stitch Pool ─────────────── */
+
+.tut-stitch-thread {
+  margin-bottom: var(--space-xl);
+  padding: var(--space-lg);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  min-height: 80px;
+}
+
+.tut-stitch-thread__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.tut-stitch-thread__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tut-stitch-thread__name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.tut-stitch-thread__stitches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.tut-stitch-thread__empty {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.tut-stitch-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(200, 169, 110, 0.1);
+  border: 1px solid rgba(200, 169, 110, 0.3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  animation: tutFadeIn 0.3s ease;
+}
+
+.tut-stitch-tag__num {
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.tut-stitch-tag__rm {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+}
+
+.tut-stitch-tag__rm:hover {
+  color: #e07070;
+  background: rgba(224, 112, 112, 0.1);
+}
+
+.tut-stitch-pool {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.tut-note-card {
+  padding: var(--space-lg);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.tut-note-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(200, 169, 110, 0.1);
+}
+
+.tut-note-card.is-added {
+  border-color: rgba(200, 169, 110, 0.3);
+  background: rgba(200, 169, 110, 0.04);
+  opacity: 0.6;
+  pointer-events: none;
+  transform: none;
+}
+
+.tut-note-card h4 {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.tut-note-card p {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Step 3: Clue ────────────────────── */
+
+.tut-clue-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.tut-clue-note {
+  padding: var(--space-lg);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-base);
+}
+
+.tut-clue-note h4 {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.tut-clue-note p {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.tut-clue-target {
+  border-bottom: 2px dashed rgba(200, 169, 110, 0.4);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  padding: 2px 0;
+}
+
+.tut-clue-target:hover {
+  background: rgba(200, 169, 110, 0.1);
+  border-bottom-color: var(--color-accent);
+}
+
+.tut-clue-target.is-marked {
+  background: rgba(200, 169, 110, 0.15);
+  border-bottom: 2px solid var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.tut-clue-note.is-connected {
+  border-color: rgba(200, 169, 110, 0.4);
+}
+
+.tut-clue-result {
+  padding: var(--space-lg);
+  background: rgba(200, 169, 110, 0.06);
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  border-radius: var(--radius-md);
+  animation: tutFadeIn 0.4s ease;
+}
+
+.tut-clue-result__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.tut-clue-result__header strong {
+  color: var(--color-accent);
+}
+
+.tut-clue-result__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.tut-clue-result__desc strong {
+  color: var(--color-accent);
+}
+
+.tut-clue-result__path {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.tut-clue-result__path-item {
+  padding: 4px 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--color-text-primary);
+}
+
+.tut-clue-result__path-arrow {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+}
+
+/* ── Step 4: Result Visualization ────── */
+
+.tut-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+.tut-result__weave {
+  position: relative;
+  padding: var(--space-xl) 0;
+}
+
+.tut-result__threads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  justify-content: center;
+  margin-bottom: var(--space-xl);
+}
+
+.tut-result__thread-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.tut-result__thread-label::before {
+  content: '';
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--tc);
+}
+
+.tut-result__canvas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.tut-result__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tut-result__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 3;
+}
+
+.tut-result__node-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.tut-result__node-name {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+.tut-result__node[data-shared="2"] .tut-result__node-name,
+.tut-result__node[data-shared="3"] .tut-result__node-name {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.tut-result__summary {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+}
+
+.tut-result__stat {
+  text-align: center;
+}
+
+.tut-result__stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.tut-result__stat-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.tut-result__message {
+  text-align: center;
+  padding: var(--space-xl) 0;
+}
+
+.tut-result__message p {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.tut-result__message strong {
+  color: var(--color-accent);
+}
+
+.tut-result__message-sub {
+  margin-top: var(--space-md);
+  font-size: var(--text-sm) !important;
+  color: var(--color-text-muted) !important;
+  font-style: italic;
+}
+
+/* ── Tutorial Nav ────────────────────── */
+
+.tut-nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: 48px;
+}
+
+.tut-nav__prev,
+.tut-nav__next {
+  padding: 12px 32px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.tut-nav__prev {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.tut-nav__prev:hover {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.tut-nav__next {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border: 1px solid var(--color-accent);
+}
+
+.tut-nav__next:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.tut-nav__next:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tut-nav__next.is-complete {
+  background: transparent;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.tut-nav__next.is-complete:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* ── Responsive ──────────────────────── */
+
+@media (max-width: 768px) {
+  .kg-hero__title {
+    font-size: 2.5rem;
+  }
+
+  .kg-section {
+    padding: 80px var(--space-lg);
+  }
+
+  .kg-concept {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .kg-mode {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .kg-mode__num {
+    width: auto;
+    text-align: left;
+    font-size: 3rem;
+  }
+
+  .tut-stitch-pool {
+    grid-template-columns: 1fr;
+  }
+
+  .tut-progress__line {
+    width: 40px;
+  }
+
+  .tut-result__summary {
+    gap: 32px;
+  }
+
+  .tut-result__canvas {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xl);
+  }
+
+  .tut-result__threads {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+}

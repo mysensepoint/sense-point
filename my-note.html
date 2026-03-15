@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Note - SensePoint</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/common.css">
@@ -19,8 +17,7 @@
   <!-- Header -->
   <header class="header">
     <a href="index.html" class="header__logo">
-      <span class="header__logo-icon">SP</span>
-      <span>SensePoint</span>
+      <img src="img/logo-horizontal.svg" alt="SensePoint" class="header__logo-img">
     </a>
     <button class="header__menu-btn" id="menuToggle" aria-label="메뉴 열기">
       <span></span>
@@ -34,12 +31,14 @@
   <nav class="menu-panel" id="menuPanel">
     <div class="menu-panel__header">
       <a href="index.html" class="menu-panel__logo">SensePoint</a>
-      <button class="menu-panel__auth" id="authBtn">로그인</button>
+      <button class="menu-panel__auth" id="authBtn">Login</button>
+      <button class="menu-panel__auth menu-panel__auth--secondary" onclick="location.href='signup.html'">Signup</button>
     </div>
     <ul class="menu-panel__nav">
       <li><a href="my-note.html" class="menu-panel__nav-item is-active">My Note</a></li>
-      <li><a href="sense-makers.html" class="menu-panel__nav-item">Sense Makers</a></li>
+      <li><a href="sense-makers-list.html" class="menu-panel__nav-item">Sense Makers</a></li>
       <li><a href="square.html" class="menu-panel__nav-item">Square</a></li>
+      <li><a href="knitting/index.html" class="menu-panel__nav-item">뜨개질</a></li>
     </ul>
     <div class="menu-panel__footer">
       <p class="menu-panel__footer-text">© 2026 SensePoint. All rights reserved.</p>
@@ -68,8 +67,8 @@
           </div>
           <div class="my-note__toolbar-center">
             <div class="my-note__type-switch" id="noteTypeSwitch">
-              <button class="my-note__type-btn is-active" data-type="blank">무지</button>
-              <button class="my-note__type-btn" data-type="template">양식지</button>
+              <button class="my-note__type-btn is-active" data-type="blank">노트</button>
+              <button class="my-note__type-btn" data-type="pdf">PDF</button>
               <div class="my-note__type-indicator"></div>
             </div>
           </div>
@@ -82,8 +81,23 @@
               </svg>
               <span>저장</span>
             </button>
+            <button class="my-note__expand-btn" id="expandBtn" title="전체보기">
+              <svg class="expand-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+              <svg class="collapse-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 14 10 14 10 20"></polyline>
+                <polyline points="20 10 14 10 14 4"></polyline>
+                <line x1="14" y1="10" x2="21" y2="3"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+            </button>
           </div>
         </div>
+
 
         <!-- Editor Body -->
         <div class="my-note__body" id="noteBody">
@@ -122,50 +136,41 @@
             ></div>
           </div>
 
-          <!-- Template Note (양식지) -->
-          <div class="my-note__template" id="templateNote">
-            <input
-              type="text"
-              class="my-note__title-input"
-              id="templateTitle"
-              placeholder="제목을 입력하세요"
-              maxlength="100"
-            >
-            <div class="my-note__template-form" id="templateForm">
-              <div class="my-note__question-group">
-                <label class="my-note__question-label">
-                  <span class="my-note__question-num">Q1</span>
-                  오늘 가장 인상 깊었던 것은 무엇인가요?
-                </label>
-                <textarea class="my-note__question-input" data-question="1" placeholder="답변을 작성하세요..." rows="3"></textarea>
+          <!-- PDF Viewer -->
+          <div class="my-note__pdf" id="pdfViewer">
+            <!-- 파일 미선택 상태 -->
+            <div class="my-note__pdf-empty" id="pdfEmpty">
+              <input type="file" id="pdfFileInput" accept=".pdf" style="display:none">
+              <button class="my-note__pdf-open-btn" id="pdfOpenBtn">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span>PDF 열기</span>
+              </button>
+              <p class="my-note__pdf-hint">PDF 파일을 선택하면 여기에 표시됩니다</p>
+            </div>
+            <!-- PDF 렌더링 영역 -->
+            <div class="my-note__pdf-content" id="pdfContent" style="display:none">
+              <div class="my-note__pdf-toolbar" id="pdfToolbar">
+                <button class="my-note__pdf-nav-btn" id="pdfPrev" title="이전 페이지">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <span class="my-note__pdf-page-info">
+                  <input type="number" class="my-note__pdf-page-input" id="pdfPageInput" min="1" value="1">
+                  <span>/ <span id="pdfPageTotal">0</span></span>
+                </span>
+                <button class="my-note__pdf-nav-btn" id="pdfNext" title="다음 페이지">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <span class="my-note__pdf-divider"></span>
+                <span class="my-note__pdf-filename" id="pdfFilename"></span>
+                <button class="my-note__pdf-close-btn" id="pdfCloseBtn" title="PDF 닫기">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
               </div>
-              <div class="my-note__question-group">
-                <label class="my-note__question-label">
-                  <span class="my-note__question-num">Q2</span>
-                  그것이 당신에게 어떤 의미를 주었나요?
-                </label>
-                <textarea class="my-note__question-input" data-question="2" placeholder="답변을 작성하세요..." rows="3"></textarea>
-              </div>
-              <div class="my-note__question-group">
-                <label class="my-note__question-label">
-                  <span class="my-note__question-num">Q3</span>
-                  떠오르는 감각이나 감정을 자유롭게 표현해보세요.
-                </label>
-                <textarea class="my-note__question-input" data-question="3" placeholder="답변을 작성하세요..." rows="3"></textarea>
-              </div>
-              <div class="my-note__question-group">
-                <label class="my-note__question-label">
-                  <span class="my-note__question-num">Q4</span>
-                  이 경험을 통해 새롭게 알게 된 것은?
-                </label>
-                <textarea class="my-note__question-input" data-question="4" placeholder="답변을 작성하세요..." rows="3"></textarea>
-              </div>
-              <div class="my-note__question-group">
-                <label class="my-note__question-label">
-                  <span class="my-note__question-num">Q5</span>
-                  내일 해보고 싶은 것이 있다면?
-                </label>
-                <textarea class="my-note__question-input" data-question="5" placeholder="답변을 작성하세요..." rows="3"></textarea>
+              <div class="my-note__pdf-canvas-wrap" id="pdfCanvasWrap">
+                <canvas id="pdfCanvas"></canvas>
               </div>
             </div>
           </div>
@@ -194,6 +199,12 @@
               <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
             <span>내 메모</span>
+          </button>
+          <button class="my-note__sidebar-tab" onclick="window.open('knitting/index.html','_blank')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            </svg>
+            <span>뜨개질 ↗</span>
           </button>
         </div>
 
@@ -317,7 +328,10 @@
           </p>
         </div>
 
+
       </aside>
+
+
     </div>
   </main>
 
@@ -373,6 +387,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.9.155/pdf.min.mjs" type="module"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>

@@ -1,34 +1,76 @@
 :root {
-  /* Colors */
-  --color-bg: #0a0a0a;
-  --color-bg-secondary: #111111;
-  --color-surface: #1a1a1a;
-  --color-surface-hover: #252525;
-  --color-border: #2a2a2a;
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #999999;
-  --color-text-muted: #666666;
-  --color-accent: #c8a96e;
-  --color-accent-hover: #d4b87a;
-  --color-highlight-light: rgba(255, 235, 153, 0.25);
-  --color-highlight-active: rgba(255, 210, 60, 0.5);
-  --color-overlay-bg: rgba(0, 0, 0, 0.4);
-  --color-menu-bg: #111111;
-  --color-white: #ffffff;
+  /* =========================================
+     FIGMA DESIGN SYSTEM — 기민 디자인 반영
+     ========================================= */
+
+  /* Neutral Palette */
+  --neutral-01: #FBFAF7;
+  --neutral-02: #F7F4EE;
+  --neutral-03: #F3EFE7;
+  --neutral-04: #EEE9E1;
+  --neutral-05: #E9E5DC;
+  --neutral-06: #E3DED4;
+  --neutral-07: #DCD3C7;
+  --neutral-08: #D5CCBF;
+  --neutral-09: #CEC4B6;
+  --neutral-10: #C7BDAD;
+
+  /* Gray Palette */
+  --gray-01: #F8F4ED;
+  --gray-02: #D6D1C8;
+  --gray-03: #B7B1A8;
+  --gray-04: #9A948B;
+  --gray-05: #7D776F;
+  --gray-06: #5F5951;
+  --gray-07: #4A443D;
+  --gray-08: #2E2A25;
+  --gray-09: #1E1A16;
+  --gray-10: #14110F;
+
+  /* Accent Palette (Purple) */
+  --accent-01: #E8DDEA;
+  --accent-02: #D8C6DC;
+  --accent-03: #C6AFCB;
+  --accent-04: #B69BBE;
+  --accent-05: #A88EB0;
+  --accent-06: #9C7A99;
+  --accent-07: #8C6F93;
+  --accent-08: #7B5F82;
+  --accent-09: #6A5071;
+  --accent-10: #57425D;
+
+  /* Semantic Colors */
+  --color-bg: #FBFAF7;
+  --color-bg-secondary: #F7F4EE;
+  --color-surface: #FBFAF7;
+  --color-surface-hover: #F7F4EE;
+  --color-border: #DCD3C7;
+  --color-text-primary: #878277;
+  --color-text-secondary: #A59E8E;
+  --color-text-muted: #C5C0B6;
+  --color-accent: #9C7A99;
+  --color-accent-hover: #B69BBE;
+  --color-highlight-light: #D8C6DC;
+  --color-highlight-active: #E8DDEA;
+  --color-overlay-bg: rgba(135, 130, 119, 0.8);
+  --color-menu-bg: #F7F4EE;
+  --color-white: #FFFFFF;
 
   /* Typography */
   --font-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'GyeonggiBatangOTF', Georgia, serif;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 2rem;
-  --text-4xl: 2.5rem;
-  --text-5xl: 3.5rem;
+  /* Main Text Scale (GyeonggiBatang) */
+  --text-6xl: 4rem;      /* 64px / 130% */
+  --text-5xl: 3.5rem;    /* 56px / 130% */
+  --text-4xl: 2.5rem;    /* 40px / 130% */
+  --text-3xl: 2rem;      /* 32px / 150% */
+  --text-2xl: 1.5rem;    /* 24px / 150% */
+  --text-xl: 1.25rem;    /* 20px / 150% */
+  --text-lg: 1.125rem;   /* 18px / 170% */
+  --text-base: 1rem;     /* 16px / 170%(Main) 150%(System) */
+  --text-sm: 0.875rem;   /* 14px / 150% */
+  --text-xs: 0.75rem;    /* 12px / 140% */
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -40,9 +82,9 @@
   --space-3xl: 4rem;
 
   /* Layout */
-  --header-height: 10vh;
-  --content-height: 90vh;
-  --menu-width: 25%;
+  --header-height: 56px;
+  --content-height: calc(100vh - 56px);
+  --menu-width: 360px;
   --sidebar-width: 25%;
   --main-width: 75%;
 
@@ -60,22 +102,22 @@
   --transition-menu: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
 
   /* Color Tags */
-  --color-tag-coral: #e8857a;
-  --color-tag-blue: #7db8d4;
-  --color-tag-green: #8fc06a;
-  --color-tag-purple: #a78bda;
-  --color-tag-orange: #e8a84c;
+  --color-tag-coral: #D97B71;
+  --color-tag-blue: #6FA9C3;
+  --color-tag-green: #84B35F;
+  --color-tag-purple: #B98EBC;
+  --color-tag-orange: #D79A43;
 
-  /* Memo Post-it */
-  --color-memo: rgba(200, 169, 110, 0.06);
-  --color-memo-hover: rgba(200, 169, 110, 0.10);
-  --color-memo-selected: rgba(200, 169, 110, 0.14);
-  --color-memo-fold: rgba(200, 169, 110, 0.25);
+  /* Memo Post-it (accent 기반으로 재매핑) */
+  --color-memo: rgba(156, 122, 153, 0.06);
+  --color-memo-hover: rgba(156, 122, 153, 0.10);
+  --color-memo-selected: rgba(156, 122, 153, 0.14);
+  --color-memo-fold: rgba(156, 122, 153, 0.25);
   --color-memo-deselect-hover: rgba(255, 255, 255, 0.04);
   --memo-fold-size: 14px;
   --memo-block-height: calc((var(--content-height) - 200px) / 5);

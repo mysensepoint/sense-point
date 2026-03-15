@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>뜨개질 — Knitting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/variables.css?v=2">
+  <link rel="stylesheet" href="css/base.css?v=2">
+  <link rel="stylesheet" href="css/app.css?v=3">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- Left: Source List -->
+    <aside class="app__sources" id="sourcesSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-header__title">소스</span>
+        <button type="button" class="sidebar-toggle" id="sourcesToggle" title="접기">&#9664;</button>
+      </div>
+
+      <!-- Source tabs -->
+      <div class="source-tabs" id="sourceTabs">
+        <button class="source-tabs__btn is-active" data-tab="all">전체</button>
+        <button class="source-tabs__btn" data-tab="fiber">올</button>
+        <button class="source-tabs__btn" data-tab="thread">실</button>
+        <button class="source-tabs__btn" data-tab="stitch">코</button>
+        <button class="source-tabs__btn" data-tab="fabric">편물</button>
+      </div>
+
+      <div class="source-controls">
+        <input id="sourceSearch" class="source-search" type="text" placeholder="검색..." />
+        <select id="sourceSort" class="source-sort">
+          <option value="newest">최신순</option>
+          <option value="tension">장력순</option>
+        </select>
+      </div>
+
+      <div class="source-list" id="sourceList"></div>
+      <p class="source-list__empty" id="sourceEmpty">아직 데이터가 없습니다.</p>
+    </aside>
+    <div class="resize-handle resize-handle--sources" id="sourcesResizeHandle" title="드래그하여 너비 조절"></div>
+
+    <!-- Center: Focus View -->
+    <main class="app__focus">
+      <canvas id="focusCanvas"></canvas>
+      <div class="focus-tooltip" id="focusTooltip"></div>
+      <div class="focus-empty" id="focusEmpty">
+        소스 목록에서 항목을 선택하면<br>포커스 뷰가 나타납니다.
+      </div>
+    </main>
+
+    <div class="resize-handle resize-handle--detail" id="detailResizeHandle" title="드래그하여 너비 조절"></div>
+
+    <!-- Right: Detail Panel -->
+    <aside class="app__detail" id="detailSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-header__title">상세</span>
+        <button type="button" class="sidebar-toggle" id="detailToggle" title="접기">&#9654;</button>
+      </div>
+      <div class="detail-content" id="detailContent">
+        <p class="detail-empty">노드를 선택하면 상세 정보가 표시됩니다.</p>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Context Menu: Focus View node -->
+  <div class="context-menu" id="focusContextMenu">
+    <div class="context-menu__item" data-action="new-thought">
+      <span class="context-menu__icon">&#10022;</span>
+      새 생각
+    </div>
+    <div class="context-menu__item" data-action="connect">
+      <span class="context-menu__icon">&#8596;</span>
+      엮기
+    </div>
+    <div class="context-menu__separator"></div>
+    <div class="context-menu__item" data-action="detail">
+      <span class="context-menu__icon">&#8594;</span>
+      상세 보기
+    </div>
+  </div>
+
+  <!-- Dialog: Tension Selector (올 잡기 — 소스 패널에서 사용) -->
+  <div class="dialog-overlay" id="tensionDialog">
+    <div class="dialog dialog--compact">
+      <h3 class="dialog__title">올 잡기</h3>
+      <p class="tension-preview" id="tensionPreview"></p>
+      <div class="tension-label">이 생각이 얼마나 강하게 걸렸나요?</div>
+      <div class="tension-dots" id="tensionDots">
+        <span class="tension-dot" data-t="1" title="살짝">1</span>
+        <span class="tension-dot" data-t="2" title="조금">2</span>
+        <span class="tension-dot is-active" data-t="3" title="보통">3</span>
+        <span class="tension-dot" data-t="4" title="꽤">4</span>
+        <span class="tension-dot" data-t="5" title="강렬!">5</span>
+      </div>
+      <div class="tone-label">이 생각의 결은?</div>
+      <div class="tone-selector" id="toneBtns">
+        <button type="button" class="tone-btn tone-btn--resonance is-active" data-tone="resonance">공명<br><span style="font-size:10px;opacity:0.7">아!!</span></button>
+        <button type="button" class="tone-btn tone-btn--friction" data-tone="friction">마찰<br><span style="font-size:10px;opacity:0.7">아닌데?!</span></button>
+        <button type="button" class="tone-btn tone-btn--question" data-tone="question">물음<br><span style="font-size:10px;opacity:0.7">흠...</span></button>
+      </div>
+      <div class="dialog__actions">
+        <button class="dialog__btn dialog__btn--cancel" id="tensionCancel">취소</button>
+        <button class="dialog__btn dialog__btn--save" id="tensionSave">잡기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog: Custom (alert/confirm/prompt 대체) -->
+  <div class="dialog-overlay" id="customDialog">
+    <div class="dialog dialog--custom">
+      <h3 class="dialog__title" id="customDialogTitle"></h3>
+      <p class="dialog__message" id="customDialogMessage"></p>
+      <input class="dialog__input" id="customDialogInput" type="text" style="display:none">
+      <div class="dialog__actions" id="customDialogActions"></div>
+    </div>
+  </div>
+
+  <!-- Core -->
+  <script src="js/core/storage.js?v=2"></script>
+  <script src="js/core/fiber-api.js?v=3"></script>
+  <!-- UI -->
+  <script src="js/ui/dialog.js?v=1"></script>
+  <script src="js/ui/source-panel.js?v=1"></script>
+  <script src="js/ui/focus-view.js?v=1"></script>
+  <script src="js/ui/detail-panel.js?v=1"></script>
+  <script src="js/ui/app.js?v=4"></script>
+</body>
+</html>

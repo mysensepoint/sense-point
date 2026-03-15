@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Square - SensePoint</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/common.css">
@@ -19,8 +17,7 @@
   <!-- Header -->
   <header class="header">
     <a href="index.html" class="header__logo">
-      <span class="header__logo-icon">SP</span>
-      <span>SensePoint</span>
+      <img src="img/logo-horizontal.svg" alt="SensePoint" class="header__logo-img">
     </a>
     <button class="header__menu-btn" id="menuToggle" aria-label="메뉴 열기">
       <span></span>
@@ -34,12 +31,14 @@
   <nav class="menu-panel" id="menuPanel">
     <div class="menu-panel__header">
       <a href="index.html" class="menu-panel__logo">SensePoint</a>
-      <button class="menu-panel__auth" id="authBtn">로그인</button>
+      <button class="menu-panel__auth" id="authBtn">Login</button>
+      <button class="menu-panel__auth menu-panel__auth--secondary" onclick="location.href='signup.html'">Signup</button>
     </div>
     <ul class="menu-panel__nav">
       <li><a href="my-note.html" class="menu-panel__nav-item">My Note</a></li>
-      <li><a href="sense-makers.html" class="menu-panel__nav-item">Sense Makers</a></li>
+      <li><a href="sense-makers-list.html" class="menu-panel__nav-item">Sense Makers</a></li>
       <li><a href="square.html" class="menu-panel__nav-item is-active">Square</a></li>
+      <li><a href="knitting/index.html" class="menu-panel__nav-item">뜨개질</a></li>
     </ul>
     <div class="menu-panel__footer">
       <p class="menu-panel__footer-text">© 2026 SensePoint. All rights reserved.</p>

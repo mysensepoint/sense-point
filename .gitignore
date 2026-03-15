@@ -1,4 +1,5 @@
 # Obsidian
+.obsidian/
 docs/.obsidian/
 
 # OS
@@ -14,6 +15,10 @@ Desktop.ini
 
 # Dependencies
 node_modules/
+
+# Server data & models
+server/data/
+server/models/
 
 # Logs
 *.log

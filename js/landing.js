@@ -80,7 +80,7 @@
         ctx.beginPath();
         ctx.moveTo(trailPts[i - 1].x, trailPts[i - 1].y);
         ctx.lineTo(trailPts[i].x, trailPts[i].y);
-        ctx.strokeStyle = 'rgba(255,255,255,' + a + ')';
+        ctx.strokeStyle = 'rgba(156,122,153,' + a + ')';
         ctx.stroke();
       }
     }
@@ -104,7 +104,7 @@
       var alpha = 0.35 * (1 - p) * (1 - p);
       ctx.beginPath();
       ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
+      ctx.strokeStyle = 'rgba(156,122,153,' + alpha + ')';
       ctx.lineWidth = 2 * (1 - p * 0.5);
       ctx.stroke();
     }

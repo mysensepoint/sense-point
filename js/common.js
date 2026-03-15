@@ -60,7 +60,7 @@
   function updateAuthUI(user) {
     currentUser = user;
     if (authBtn) {
-      authBtn.textContent = user && user.emailVerified ? '로그아웃' : '로그인';
+      authBtn.textContent = user && user.emailVerified ? 'Logout' : 'Login';
     }
   }
 
@@ -79,6 +79,21 @@
       window.location.href = 'login.html';
     }
   });
+
+  // =========================================
+  // Header Scroll — backdrop blur on scroll
+  // =========================================
+
+  var header = document.querySelector('.header');
+  if (header) {
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 0) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    });
+  }
 
   // =========================================
   // Public API
